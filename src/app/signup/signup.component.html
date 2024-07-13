@@ -1,0 +1,35 @@
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton+SC&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="main-container" style="height: 100%;">
+        <div id="recaptcha-container"></div>
+        <h2 class="anton-sc-regular title" style="color: white;">Welcome!</h2>
+        <h3 class="anton-sc-regular title subtitle" style="color: white;">Just a few details</h3>
+        <h3 class="anton-sc-regular title subtitle" style="color: white;">before we get started</h3>
+
+        <form class="signup-form">
+            <mat-form-field class="signup-full-width"> 
+              <mat-label>Username</mat-label>
+              <input matInput placeholder="Enter your name" value="" name="username" [(ngModel)]="username">
+            </mat-form-field>
+          
+            <mat-form-field class="signup-full-width">
+              <mat-label>Phone Number</mat-label>
+              <input matInput placeholder="An OTP will be sent for verification" name="phoneNumber" [(ngModel)]="phoneNumber"/>
+            </mat-form-field>
+
+            <mat-form-field class="signup-full-width">
+                <mat-label>OTP</mat-label>
+                <input [disabled]="disabled" matInput placeholder="Enter the OTP" name="otp" [(ngModel)]="otp"/>
+            </mat-form-field>
+
+            <div class="send-otp anton-sc-regular" (click)="actionDetails()">
+                <span style="margin-top: 45%;color: white;">{{buttonText}}</span>
+            </div>
+          </form>
+    </div>
+</body>
