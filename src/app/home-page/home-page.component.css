@@ -19,3 +19,26 @@ body{
 .toolbar-text{
     margin-top: 10px;
 }
+
+.feature-tile{
+    height: 22%;
+    width: 60%;
+    background-color: gray;    
+    margin: 0 auto;
+    margin-top: 10%;
+    border-radius: 20px;
+    border: 1px solid black;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.tile-text{
+    text-align: center;
+    padding-top: 10%;
+    font-size: 20px;
+}
+
+.tile-subtext{
+    text-align: center;
+    padding-top: 3%;
+    font-size: 15px;
+}

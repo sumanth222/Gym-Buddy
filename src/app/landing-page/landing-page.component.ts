@@ -19,5 +19,4 @@ export class LandingPageComponent {
   loginPage(){
     this.router.navigate(['/login'])
   }
-
 }
