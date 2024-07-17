@@ -12,19 +12,24 @@
         <h3 class="anton-sc-regular title subtitle" style="color: white;">before we get started</h3>
 
         <form class="signup-form">
-            <mat-form-field class="signup-full-width"> 
+            <mat-form-field class="signup-full-width inputs"> 
               <mat-label>Username</mat-label>
-              <input matInput placeholder="Enter your name" value="" name="username" [(ngModel)]="username">
-            </mat-form-field>
-          
-            <mat-form-field class="signup-full-width">
-              <mat-label>Phone Number</mat-label>
-              <input matInput placeholder="An OTP will be sent for verification" name="phoneNumber" [(ngModel)]="phoneNumber"/>
+              <input matInput  required="true" placeholder="Enter your name" value="" name="username" [(ngModel)]="username">
             </mat-form-field>
 
-            <mat-form-field class="signup-full-width">
+            <mat-form-field class="personal-full-width inputs"> 
+              <mat-label>Your City, State</mat-label>
+              <input matInput required="true" placeholder="Ex: Hyderabad, Telangana" value="" name="cityState" [(ngModel)]="cityState">
+            </mat-form-field>
+          
+            <mat-form-field class="signup-full-width inputs">
+              <mat-label>Phone Number</mat-label>
+              <input matInput required="true" placeholder="An OTP will be sent for verification" name="phoneNumber" [(ngModel)]="phoneNumber"/>
+            </mat-form-field>
+
+            <mat-form-field class="signup-full-width inputs">
                 <mat-label>OTP</mat-label>
-                <input [disabled]="disabled" matInput placeholder="Enter the OTP" name="otp" [(ngModel)]="otp"/>
+                <input [disabled]="disabled" required="true" matInput placeholder="Enter the OTP" name="otp" [(ngModel)]="otp"/>
             </mat-form-field>
 
             <div class="send-otp anton-sc-regular" (click)="actionDetails()">

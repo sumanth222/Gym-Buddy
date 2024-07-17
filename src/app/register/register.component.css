@@ -36,7 +36,45 @@ body{
     padding: 10px;
 }
 
-.inputs{
-    width: 80%;
-    margin-left: 10%;
+
+.next-button{
+    height: 45px;
+    width: 60%;
+    background-color: black;
+    border-radius: 8px;
+    margin-left: 8%;
+    margin-top: 6%;
+    border-style: 1px solid black;
+    text-align: center;
+    font-size: 20px;
+    border: 1px solid white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin: 0 auto;
+}
+
+.back-button{
+    height: 20px;
+    width: 20%;
+    margin: 0 auto;
+    background-color: grey;
+    border-radius: 8px;
+    margin-top: 8%;
+    border: 1px solid black;
+    text-align: center;
+    font-size: 15px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.register-button{
+    height: 45px;
+    width: 50%;
+    background-color: black;
+    border-radius: 8px;
+    margin: 0 auto;
+    margin-top: 6%;
+    border-style: 1px solid black;
+    text-align: center;
+    font-size: 20px;
+    border: 1px solid white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }

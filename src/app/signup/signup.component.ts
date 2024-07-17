@@ -3,6 +3,7 @@ import firebase from "firebase/compat/app";
 import { firebaseConfig } from 'src/environments/environment';
 import { RecaptchaVerifier, PhoneAuthProvider, getAuth, signInWithCredential } from '@firebase/auth';
 import { Router } from '@angular/router';
+import { FirebaseService } from 'src/services/firebase.service';
 
 
 @Component({
@@ -20,8 +21,9 @@ export class SignupComponent {
   auth : any;
   verificationId: string=  "";
   disabled: boolean = true
+  cityState: string = "";
 
-  constructor(private router: Router){
+  constructor(private router: Router, private firebaseService: FirebaseService){
     this.app = firebase.initializeApp(firebaseConfig);
     this.auth = getAuth(this.app);
   }
@@ -29,8 +31,10 @@ export class SignupComponent {
 
   async actionDetails(){
     if(this.otp == ""){
-      await this.createAccount();
-      this.buttonText = "Verify and register"
+      if(this.username != "" && this.phoneNumber != "" && this.cityState != ""){
+        await this.createAccount();
+        this.buttonText = "Verify and register"
+      }
     }
     else{
       this.verifyAndRegister();
@@ -38,21 +42,24 @@ export class SignupComponent {
   }
 
   async createAccount(){
-    const appVerifier = new RecaptchaVerifier(this.auth, 'recaptcha-container',{
-      size: 'invisible',
-      callback:(response : any) => {
-        console.log("Captcha verified");  
-      }
-    })
-    const provider = new PhoneAuthProvider(this.auth);
-    this.verificationId = await provider.verifyPhoneNumber("+91" + this.phoneNumber, appVerifier);
-    this.disabled = false;
+    if(this.phoneNumber.length == 10){
+      const appVerifier = new RecaptchaVerifier(this.auth, 'recaptcha-container',{
+        size: 'invisible',
+        callback:(response : any) => {
+          console.log("Captcha verified");  
+        }
+      })
+      const provider = new PhoneAuthProvider(this.auth);
+      this.verificationId = await provider.verifyPhoneNumber("+91" + this.phoneNumber, appVerifier);
+      this.disabled = false;
+    }
   }
 
   async verifyAndRegister(){
     const authCredential = PhoneAuthProvider.credential(this.verificationId, this.otp);
     const userCredential = await signInWithCredential(this.auth, authCredential).then((result) => {
         console.log("Logged in success"+result);
+        this.firebaseService.createUserInfo(this.username, this.phoneNumber, this.cityState)
         this.router.navigate(['/login'])
       })
       .catch((error: any) => {

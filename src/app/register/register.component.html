@@ -22,22 +22,30 @@
     <h2 class="anton-sc-regular" style="color: white; text-align: center;">Register yourself as a trainer below!</h2>
     <h3 class="anton-sc-regular subtitle" style="color: white;">Just a few details about yourself</h3>
 
-    <h3 class="anton-sc-regular subheader" style="color: white;">Personal Information</h3>
+    <div *ngIf = "nextPage == false">
+    <h3 class="anton-sc-regular subheader" style="color: white;text-align: center;">Personal Information</h3>
     <form class="personal-form">
+        
+
         <mat-form-field class="personal-full-width inputs"> 
           <mat-label>Experience</mat-label>
-          <input matInput placeholder="Experience in months" value="" name="exp" [(ngModel)]="exp">
+          <input matInput type="number" required="true" placeholder=" Current experience in months" value="" name="exp" [(ngModel)]="exp" (change)="onChangeExp()">
         </mat-form-field>
 
         <br/>
+
+        <mat-form-field class="personal-full-width inputs"> 
+            <mat-label>Your availability (Days)</mat-label>
+            <input matInput required="true" placeholder="Ex: Monday to Friday" value="" name="availDays" [(ngModel)]="availDays">
+        </mat-form-field>
       
         <mat-form-field class="personal-full-width inputs"> 
-            <mat-label>Your availability</mat-label>
-            <input matInput placeholder="Ex: 5 to 8" value="" name="exp" [(ngModel)]="exp">
+            <mat-label>Your availability (Time)</mat-label>
+            <input matInput required="true" placeholder="Ex: 5 to 8" value="" name="avail" [(ngModel)]="avail">
         </mat-form-field>
         <mat-form-field class="personal-full-width inputs" style="width: 30%;">
           <mat-label>AM/PM</mat-label>
-          <mat-select>
+          <mat-select [(value)]="selected">
             @for (timezone of timezones; track timezone) {
             <mat-option [value]="timezone.value">{{timezone.value}}</mat-option>
             }
@@ -46,10 +54,29 @@
 
         <mat-form-field class="personal-full-width inputs"> 
             <mat-label>About yourself</mat-label>
-            <textarea matInput placeholder="Experience in months" value="" name="exp" [(ngModel)]="exp"></textarea>
+            <textarea matInput required="true" placeholder="Experience in months" value="" name="about" [(ngModel)]="about"></textarea>
         </mat-form-field>
 
+        <div class="next-button anton-sc-regular" (click) = "validateAndNext()">
+            <span style="margin-top: 45%;color: white;">Next</span>
+        </div>
+
     </form>
+    </div>
+
+    <div *ngIf = "nextPage == true">
+        <div (click)="togglePage()" class="back-button anton-sc-regular"><span style="margin-top: 65%;">Go back</span></div>
+        <h3 class="anton-sc-regular subheader" style="color: white;text-align: center;">Rates</h3>
+        <h3 class="anton-sc-regular subheader" style="color: white;text-align: center;font-size: 16px;">
+            Since you have around {{expYears}} years of Experience, for each hour you could earn upto {{rates[rateIndex]}}
+        </h3>
+        <h3 class="anton-sc-regular subheader" style="color: white;text-align: center;font-size: 16px;">
+            Kindly note that we might ask support documents such as your gym membership or bill receipt in case your experience is more than 2 years
+        </h3>
+        <h3 class="anton-sc-regular subheader" style="color: white;text-align: center;font-size: 16px;">Click to know more.</h3>
+        <div class="register-button anton-sc-regular" (click)="registerAsTrainer()"><span style="margin-top: 45%;color: white;">Confirm and Register</span></div>
+
+    </div>
 
 
 </body>
