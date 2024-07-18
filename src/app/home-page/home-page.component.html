@@ -32,9 +32,14 @@
             <p class="anton-sc-regular tile-subtext">Find a person who is ready to guide and train you at your gym!</p>
         </div>
 
-        <div class="feature-tile" (click) = "registerPage()">
+        <div *ngIf = "!isTrainer" class="feature-tile" (click) = "registerPage()">
             <p class="anton-sc-regular tile-text">Register as a Trainer</p>
             <p class="anton-sc-regular tile-subtext">Register yourself as a trainer and earn money by guiding people who need help in their workouts</p>
+        </div>
+
+        <div *ngIf = "isTrainer" class="feature-tile" (click) = "registerPage()">
+            <p class="anton-sc-regular tile-text">Workout session requests</p>
+            <p class="anton-sc-regular tile-subtext">As a trainer, you can find your workout sessions that people have requested for, here.</p>
         </div>
 
     </div>

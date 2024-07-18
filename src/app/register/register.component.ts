@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
 import { FirebaseService } from 'src/services/firebase.service';
 import { UserServiceService } from 'src/services/user-service.service';
+import { Router } from '@angular/router';
 
 interface Timezone{
   value: string
@@ -15,7 +16,9 @@ interface Timezone{
 })
 export class RegisterComponent {
 
-  constructor(private dialog : MatDialog, private firebaseService: FirebaseService, private userService: UserServiceService){
+  constructor(private dialog : MatDialog, private firebaseService: FirebaseService, private userService: UserServiceService,
+    private router: Router
+  ){
     
   }
 
@@ -75,6 +78,35 @@ export class RegisterComponent {
 
   registerAsTrainer(){
     let userObj = this.userService.getUserObject();
-    this.firebaseService.registerTrainer(userObj.id, userObj.username, this.exp, this.availDays, this.avail, this.selected, this.about);
+    this.firebaseService.registerTrainer(userObj.id, userObj.username, 
+      this.exp, this.availDays, this.avail, this.selected, this.about, this.rates[this.rateIndex])
+      .then((response) => {
+        //If there is some error while checking firestore and do not receive proper response
+        if(response == null){
+          this.dialog.open(DialogComponent,{
+            data: {
+              content: new String("An error occured, please try again."),
+            }
+          })
+        }
+        //If user has already registered as a trainer.
+        else if(response == false){
+          this.dialog.open(DialogComponent,{
+            data: {
+              content: new String("You have already registered as a trainer! If this is not the case, please contact support."),
+            }
+          })
+        }
+        //If none of the above cases, register as trainer and navigate to home screen
+        else{
+          this.firebaseService.updateUserAsTrainer(userObj.id);
+          this.dialog.open(DialogComponent,{
+            data: {
+              content: new String("Registered as Trainer! Welcome aboard."),
+            }
+          })
+          this.router.navigate(['home'])
+        }
+      })
   }
 }

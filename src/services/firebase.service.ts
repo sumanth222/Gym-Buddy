@@ -17,7 +17,7 @@ export class FirebaseService {
   userExists: boolean = false;
   userObject: UserObject = new UserObject;
 
-  constructor(private userObjectService: UserServiceService) { }
+  constructor(private userObjectService: UserServiceService, private userService: UserServiceService) { }
 
   async createUserInfo(username: string, phoneNumber: string, cityState: string){
     const db = firebase.firestore();
@@ -35,25 +35,33 @@ export class FirebaseService {
         phoneNumber:  phoneNumber,
         createdDate: new Date(),
         lastLogin: new Date(),
-        address: cityState
+        address: cityState,
+        role: "na"
     }).then((document) => {
       //Save the user in usercontext for subsequent retrievals
       this.userObject.id = document.id;
       this.userObject.phoneNumber = phoneNumber;
       this.userObject.cityState = cityState;
       this.userObject.username = username;
+      this.userObject.role = "na";
       this.userObjectService.setUserObject(this.userObject);
+      this.userService.setUserObject(this.userObject);
     });
     }
   }
 
-  async getUser(phoneNumber: string){
+  async getUser(phoneNumber: string, userObject: UserObject){
     const db = firebase.firestore();
     let user: any = null;
-    console.log("Phno: "+phoneNumber);
     await db.collection("user-info").where("phoneNumber", "==", phoneNumber).get().then((querySnapshot) => {
       if(querySnapshot.size > 0){
         user = querySnapshot.docs[0];
+        userObject.username = user.data().name;
+        userObject.phoneNumber = user.data().phoneNumber;
+        userObject.cityState = user.data().address;
+        userObject.id = user.id;
+        userObject.role = user.data().role;
+        this.userService.setUserObject(userObject);
       }
     });
     return user;
@@ -63,9 +71,7 @@ export class FirebaseService {
     const db = firebase.firestore();
     let user: any;
 
-    console.log("PhNo:"+ phoneNumber)
-
-    this.getUser(phoneNumber).then((user) => {
+    this.getUser(phoneNumber, new UserObject()).then((user) => {
       console.log(user);
       if(user != null){
         return true;
@@ -75,8 +81,41 @@ export class FirebaseService {
     return null;
   }
 
-  async registerTrainer(id: string, username: string, exp: number, availDay: string, availTime: string, meridian: string, about: string){
+  async registerTrainer(id: string, username: string, exp: number, availDay: string, availTime: string, meridian: string, about: string,
+    rate: string
+  ){
+    const db = firebase.firestore();
+    let response = null;
+    await db.collection("trainer-info").where("id", "==", id).get().then((querySnapshot) => {
+      if(querySnapshot.size > 0){
+        response = false;
+      }
+      else{
+        addDoc(collection(this.firestore, "trainer-info"), {
+          id: id,
+          username: username,
+          experience: exp,
+          availabilityDays: availDay,
+          availabilityTime: availTime,
+          meridian: meridian,
+          bio: about,
+          rate: rate
+        })
+        response = true;
+      }
+    })
+    return response;
+  }
 
+  async updateUserAsTrainer(id: string){
+    const db = firebase.firestore();
 
+    await db.collection("user-info").doc(id).update({
+      role: "trainer"
+    }).then(() => {
+      console.log("Updated user as Trainer");
+    }).catch((err) => {
+      console.log("Error while updating user as trainer: "+err);
+    })
   }
 }

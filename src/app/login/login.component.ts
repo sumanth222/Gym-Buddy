@@ -6,6 +6,7 @@ import { RecaptchaVerifier, PhoneAuthProvider, getAuth, signInWithCredential } f
 import firebase from "firebase/compat/app";
 import { firebaseConfig } from 'src/environments/environment';
 import { Router } from '@angular/router';
+import { UserObject } from '../objects/user-object';
 
 
 @Component({
@@ -29,6 +30,7 @@ export class LoginComponent {
   otp: string = "";
   disabled: boolean = true;
   buttonText: string = "Send OTP"
+  userObject: UserObject = new UserObject;
 
   actionDetails(){
     if(this.phoneNumber == "" || this.phoneNumber.length != 10){
@@ -74,7 +76,7 @@ export class LoginComponent {
   async verifyAndLogin(){
     const authCredential = PhoneAuthProvider.credential(this.verificationId, this.otp);
     const userCredential = await signInWithCredential(this.auth, authCredential).then((result) => {
-        this.firebaseService.getUser(this.phoneNumber).then((user) => {
+        this.firebaseService.getUser(this.phoneNumber, this.userObject).then((user) => {
           console.log("Logged in user is" +user.id)
         })
         this.router.navigate(['/home'])

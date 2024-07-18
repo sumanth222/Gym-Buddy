@@ -4,6 +4,7 @@ import { firebaseConfig } from 'src/environments/environment';
 import { RecaptchaVerifier, PhoneAuthProvider, getAuth, signInWithCredential } from '@firebase/auth';
 import { Router } from '@angular/router';
 import { FirebaseService } from 'src/services/firebase.service';
+import { UserObject } from '../objects/user-object';
 
 
 @Component({
@@ -22,6 +23,7 @@ export class SignupComponent {
   verificationId: string=  "";
   disabled: boolean = true
   cityState: string = "";
+  userObject : UserObject = new UserObject;
 
   constructor(private router: Router, private firebaseService: FirebaseService){
     this.app = firebase.initializeApp(firebaseConfig);
@@ -60,6 +62,7 @@ export class SignupComponent {
     const userCredential = await signInWithCredential(this.auth, authCredential).then((result) => {
         console.log("Logged in success"+result);
         this.firebaseService.createUserInfo(this.username, this.phoneNumber, this.cityState)
+        
         this.router.navigate(['/login'])
       })
       .catch((error: any) => {
