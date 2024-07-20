@@ -25,4 +25,8 @@ export class HomePageComponent {
   registerPage(){
     this.router.navigate(['/register'])
   }
+
+  sessionsPage(){
+    this.router.navigate(['/sessions'])
+  }
 }

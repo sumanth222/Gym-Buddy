@@ -7,8 +7,7 @@ import {FormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatDialogModule} from '@angular/material/dialog';
-
-
+import {MatCardModule} from '@angular/material/card';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,6 +17,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { RegisterComponent } from './register/register.component';
 import { DialogComponent } from './dialog/dialog.component';
 import {MatButtonModule} from '@angular/material/button';
+import { SessionsComponent } from './sessions/sessions.component';
 
 
 @NgModule({
@@ -27,7 +27,8 @@ import {MatButtonModule} from '@angular/material/button';
     LoginComponent,
     HomePageComponent,
     RegisterComponent,
-    DialogComponent
+    DialogComponent,
+    SessionsComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +40,8 @@ import {MatButtonModule} from '@angular/material/button';
     MatToolbarModule,
     MatSelectModule,
     MatDialogModule,
-    MatButtonModule
+    MatButtonModule,
+    MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent]
