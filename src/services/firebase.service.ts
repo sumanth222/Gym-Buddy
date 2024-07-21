@@ -118,4 +118,12 @@ export class FirebaseService {
       console.log("Error while updating user as trainer: "+err);
     })
   }
+
+  async getPendingSessions(){
+    const db = firebase.firestore();
+    
+    await db.collection("sessions").where("status", "==", "Pending").get().then((querySnapshot) => {
+      console.log(querySnapshot);
+    })
+  }
 }
