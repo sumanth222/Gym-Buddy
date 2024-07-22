@@ -18,6 +18,7 @@ import { RegisterComponent } from './register/register.component';
 import { DialogComponent } from './dialog/dialog.component';
 import {MatButtonModule} from '@angular/material/button';
 import { SessionsComponent } from './sessions/sessions.component';
+import { SessionDetailComponent } from './session-detail/session-detail.component';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { SessionsComponent } from './sessions/sessions.component';
     HomePageComponent,
     RegisterComponent,
     DialogComponent,
-    SessionsComponent
+    SessionsComponent,
+    SessionDetailComponent
   ],
   imports: [
     BrowserModule,

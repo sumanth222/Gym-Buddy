@@ -4,7 +4,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Anton+SC&display=swap" rel="stylesheet">
 </head>
 
-<body>
+<body [ngStyle] = "{'height' : (pendingSessions.length == 0) ? '100vh' : '100%'}">
     <mat-toolbar style="background-color: gray;padding-right: 0px;">
         <span class="toolbar-spacer"></span>
         <div class="home-button toolbar-button" style="margin-right: 10px;">
@@ -21,10 +21,10 @@
     <div>
         <h1 class="anton-sc-regular tile-text" style="text-align: center; color: white;">Sessions</h1>
         <mat-toolbar style="background-color: black;padding-right: 0px;padding-left: 0px;">
-            <div class="home-button toolbar-button-session">
+            <div class="home-button toolbar-button-session" (click)="getPendingSessions()">
                 <p class="home-button-text toolbar-text">Pending sessions</p>
             </div>
-            <div class="home-button toolbar-button-session">
+            <div class="home-button toolbar-button-session" (click)="getUpcomingSessions()">
                 <p class="home-button-text toolbar-text">Upcoming sessions</p>
             </div>
         </mat-toolbar>
@@ -32,25 +32,25 @@
             <div class="about-button toolbar-button-session">
                 <p class="about-button-text toolbar-text">Book new session</p>
             </div>
-            <div class="contact-button toolbar-button-session">
+            <div class="contact-button toolbar-button-session" (click)="getCompletedSessions()">
                 <p class="contact-button-text toolbar-text">Completed sessions</p>
             </div>
         </mat-toolbar>
+        
+        <p *ngIf = "pendingSessions.length == 0" class="anton-sc-regular tile-text" style="text-align: center; color: white;">No sessions found :(</p>
 
         <div class="sessions-cards">
-            <mat-card class="session-card">
+            @for(session of pendingSessions; track session){
+            <mat-card class="session-card" (click) = "goToSession(session.id)">
                 <mat-card-content style="margin-top: 20px;">
-                  <p class="anton-sc-regular tile-text">Requested By: (name)</p>
-                  <p class="anton-sc-regular tile-text">Date: DD/MM/YYYY | Time: HH:MM AM/PM</p>
-                  <p class="anton-sc-regular tile-text">Location: Gym Name, Address (if specified)</p>
-                  <p class="anton-sc-regular tile-text">Status: Pending </p>
-                  <div style="height: 3rem;width: 100%; background-color: black;">
-                    <p class="anton-sc-regular tile-text" style="color: white;text-align: center;font-size: 20px;">
-                        More info
-                    </p>
-                    </div>
+                  <p class="anton-sc-regular tile-text">Requested By: {{session.user_id}}</p>
+                  <p class="anton-sc-regular tile-text">Date: {{session.requested_date}} | Time: {{session.requested_time}}</p>
+                  <p class="anton-sc-regular tile-text">Location: {{session.location}}</p>
+                  <p class="anton-sc-regular tile-text">Status: {{session.status}} </p>
+                  <p class="anton-sc-regular tile-text" style="text-align: center; color: white;">Click to know more</p>
                 </mat-card-content>
             </mat-card>
+        }
 
 
         </div>

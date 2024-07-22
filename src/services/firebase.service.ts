@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import firebase from 'firebase/compat/app';
-import { Firestore, addDoc, collection, getDocs, getFirestore, query } from 'firebase/firestore';
+import { Firestore, Timestamp, addDoc, collection, getDocs, getFirestore, query } from 'firebase/firestore';
 import { firebaseConfig } from '../environments/environment';
 import "firebase/compat/firestore";
 import { UserObject } from 'src/app/objects/user-object';
+import { SessionObject } from 'src/app/objects/session-object';
 import { UserServiceService } from './user-service.service';
 
 @Injectable({
@@ -119,11 +120,52 @@ export class FirebaseService {
     })
   }
 
-  async getPendingSessions(){
+  async getSessions(status: string){
     const db = firebase.firestore();
+    let pendingSessions: SessionObject[] = [];
     
-    await db.collection("sessions").where("status", "==", "Pending").get().then((querySnapshot) => {
-      console.log(querySnapshot);
+    await db.collection("sessions").where("status", "==", status).get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        let timestamp = new Timestamp(doc.data().requested_date.seconds, doc.data().requested_date.nanoseconds);
+        let created_date = new Timestamp(doc.data().created_date.seconds, doc.data().created_date.nanoseconds);
+        pendingSessions.push(new SessionObject(
+          doc.id,
+          doc.data().user_id,
+          doc.data().trainer_id,
+          doc.data().status,
+          timestamp.toDate(),
+          doc.data().requested_time,
+          doc.data().location,
+          doc.data().feedback,
+          created_date.toDate(),
+          doc.data().description
+        ));
+      })
     })
+    return pendingSessions;
   }
+
+  async getSessionById(id: string){
+    const db = firebase.firestore();
+    let session: any;
+    
+    await db.collection("sessions").doc(id).get().then((doc) => {
+        let timestamp = new Timestamp(doc?.data()?.requested_date.seconds, doc?.data()?.requested_date.nanoseconds);
+        let created_date = new Timestamp(doc?.data()?.created_date.seconds, doc?.data()?.created_date.nanoseconds);
+        session = new SessionObject(
+          doc.id,
+          doc?.data()?.user_id,
+          doc?.data()?.trainer_id,
+          doc?.data()?.status,
+          timestamp.toDate(),
+          doc?.data()?.requested_time,
+          doc?.data()?.location,
+          doc?.data()?.feedback,
+          created_date.toDate(),
+          doc?.data()?.description
+        );
+      })
+    return session;
+  }
+  
 }
