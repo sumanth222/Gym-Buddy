@@ -6,6 +6,8 @@ import "firebase/compat/firestore";
 import { UserObject } from 'src/app/objects/user-object';
 import { SessionObject } from 'src/app/objects/session-object';
 import { UserServiceService } from './user-service.service';
+import { TrainerObject } from 'src/app/objects/trainer-object';
+import { TrainerInfoService } from './trainer-info.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +20,9 @@ export class FirebaseService {
   userExists: boolean = false;
   userObject: UserObject = new UserObject;
 
-  constructor(private userObjectService: UserServiceService, private userService: UserServiceService) { }
+  constructor(private userObjectService: UserServiceService, private userService: UserServiceService,
+    private trainerObjService: TrainerInfoService
+  ) { }
 
   async createUserInfo(username: string, phoneNumber: string, cityState: string){
     const db = firebase.firestore();
@@ -54,7 +58,8 @@ export class FirebaseService {
   async getUser(phoneNumber: string, userObject: UserObject){
     const db = firebase.firestore();
     let user: any = null;
-    await db.collection("user-info").where("phoneNumber", "==", phoneNumber).get().then((querySnapshot) => {
+    await db.collection("user-info").where("phoneNumber", "==", phoneNumber).get().then(async (querySnapshot) => {
+      let docId = querySnapshot.docs
       if(querySnapshot.size > 0){
         user = querySnapshot.docs[0];
         userObject.username = user.data().name;
@@ -63,6 +68,23 @@ export class FirebaseService {
         userObject.id = user.id;
         userObject.role = user.data().role;
         this.userService.setUserObject(userObject);
+
+        if(userObject.role == "trainer"){
+          //Get and update user session as trainer
+          let trainerObject = new TrainerObject();
+
+          await db.collection("trainer-info").where("id" , "==", user.id).get().then((querySnapshot) => {
+            let trainerObj = querySnapshot.docs[0];
+            trainerObject.id = trainerObj.data().id;
+            trainerObject.availdays = trainerObj.data().availabilityDays;
+            trainerObject.availtime = trainerObj.data().availabilityTime;
+            trainerObject.bio = trainerObj.data().bio;
+            trainerObject.exp = trainerObj.data().experience;
+            trainerObject.meridian = trainerObj.data().meridian;
+            trainerObject.rate = trainerObj.data().rate;
+            this.trainerObjService.setTrainerObj(trainerObject);
+          })
+        }
       }
     });
     return user;
@@ -105,6 +127,14 @@ export class FirebaseService {
         response = true;
       }
     })
+    let trainerObj = new TrainerObject();
+    trainerObj.availdays = availDay;
+    trainerObj.availtime = availTime;
+    trainerObj.bio = about;
+    trainerObj.username = username;
+    trainerObj.meridian = meridian;
+    trainerObj.rate = rate;
+    this.trainerObjService.setTrainerObj(trainerObj);
     return response;
   }
 
@@ -138,7 +168,8 @@ export class FirebaseService {
           doc.data().location,
           doc.data().feedback,
           created_date.toDate(),
-          doc.data().description
+          doc.data().description,
+          doc.data().hours
         ));
       })
     })
@@ -162,10 +193,22 @@ export class FirebaseService {
           doc?.data()?.location,
           doc?.data()?.feedback,
           created_date.toDate(),
-          doc?.data()?.description
+          doc?.data()?.description,
+          doc?.data()?.hours
         );
       })
     return session;
   }
-  
+
+  async confirmSession(docID: string, trainerId: string){
+    const db = firebase.firestore();
+
+    await db.collection("sessions").doc(docID).update({
+      status : "Confirmed",
+      trainer_id: trainerId
+    }).then((response) => {
+    }).catch((error) => {
+      console.log("Error occurred while updating session as confirmed: "+error);
+    })
+  }
 }

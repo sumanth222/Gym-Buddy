@@ -26,7 +26,7 @@ export class SessionsComponent {
   }
 
   async getUpcomingSessions(){
-    await this.firebaseService.getSessions("Upcoming").then((sessions) => {
+    await this.firebaseService.getSessions("Confirmed").then((sessions) => {
       this.pendingSessions = sessions;
     })
   }

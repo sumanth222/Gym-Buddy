@@ -4,7 +4,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Anton+SC&display=swap" rel="stylesheet">
 </head>
 
-<body [ngStyle] = "{'height' : (pendingSessions.length == 0) ? '100vh' : '100%'}">
+<body [ngStyle] = "{'height' : (pendingSessions.length == 0 || pendingSessions.length == 1) ? '100vh' : '100%'}">
     <mat-toolbar style="background-color: gray;padding-right: 0px;">
         <span class="toolbar-spacer"></span>
         <div class="home-button toolbar-button" style="margin-right: 10px;">

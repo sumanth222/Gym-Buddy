@@ -8,5 +8,6 @@
     <p>{{data.content}}</p>
 </mat-dialog-content>
 <mat-dialog-actions>
-    <button mat-button mat-dialog-close cdkFocusInitial>Ok</button>
+    <button mat-button mat-dialog-close cdkFocusInitial (click)="clickedClose()">Close</button>
+    <button mat-button mat-dialog-close cdkFocusInitial (click)="clickedOk()">Ok</button>
 </mat-dialog-actions>
