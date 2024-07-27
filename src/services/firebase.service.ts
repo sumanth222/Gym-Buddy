@@ -211,4 +211,27 @@ export class FirebaseService {
       console.log("Error occurred while updating session as confirmed: "+error);
     })
   }
+
+  async startSession(docID: string){
+    const db = firebase.firestore();
+
+    await db.collection("sessions").doc(docID).update({
+      status : "Started",
+    }).then((response) => {
+    }).catch((error) => {
+      console.log("Error occurred while updating session as started: "+error);
+    })
+  }
+  
+  async cancelSession(docID: string){
+    const db = firebase.firestore();
+
+    await db.collection("sessions").doc(docID).update({
+      status : "Pending",
+      trainer_id: ""
+    }).then((response) => {
+    }).catch((error) => {
+      console.log("Error occurred while updating session as started: "+error);
+    })
+  }
 }

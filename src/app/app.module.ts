@@ -8,6 +8,9 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatCardModule} from '@angular/material/card';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,6 +22,7 @@ import { DialogComponent } from './dialog/dialog.component';
 import {MatButtonModule} from '@angular/material/button';
 import { SessionsComponent } from './sessions/sessions.component';
 import { SessionDetailComponent } from './session-detail/session-detail.component';
+import { BookSessionComponent } from './book-session/book-session.component';
 
 
 @NgModule({
@@ -30,7 +34,8 @@ import { SessionDetailComponent } from './session-detail/session-detail.componen
     RegisterComponent,
     DialogComponent,
     SessionsComponent,
-    SessionDetailComponent
+    SessionDetailComponent,
+    BookSessionComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +48,10 @@ import { SessionDetailComponent } from './session-detail/session-detail.componen
     MatSelectModule,
     MatDialogModule,
     MatButtonModule,
-    MatCardModule
+    MatCardModule,
+    MatSnackBarModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [],
   bootstrap: [AppComponent]

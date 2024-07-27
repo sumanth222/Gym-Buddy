@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { UserServiceService } from 'src/services/user-service.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FirebaseService } from 'src/services/firebase.service';
 import { TrainerInfoService } from 'src/services/trainer-info.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -21,9 +21,10 @@ export class SessionDetailComponent {
   location: string = "";
   rate: number = 0;
   hours: number = 0;
+  status: string = "";
 
   constructor(private route: ActivatedRoute, private firebaseService: FirebaseService, private trainerObjService: TrainerInfoService,
-    private dialog: MatDialog
+    private dialog: MatDialog, private router: Router
   ){
 
   }
@@ -39,6 +40,7 @@ export class SessionDetailComponent {
       this.description = session.description;
       this.location = session.location;
       this.hours = session.hours
+      this.status = session.status;
     })
     this.rate = parseInt(this.trainerObjService.getTrainerObj().rate) * this.hours;
   }
@@ -55,6 +57,37 @@ export class SessionDetailComponent {
       console.log(response);
       if("ok" == response){
         this.firebaseService.confirmSession(this.sessionId, trainerId);
+        this.router.navigate(['/sessions'])
+      }
+    })
+  }
+
+  startSession(){
+    let dialogRef = this.dialog.open(DialogComponent, {
+      data: {
+        content: new String("Are you sure you want to start this session?")
+      }
+    })
+    dialogRef.afterClosed().subscribe((response) => {
+      console.log(response);
+      if("ok" == response){
+        this.firebaseService.startSession(this.sessionId);
+        this.router.navigate(['/sessions'])
+      }
+    })
+  }
+
+  cancelSession(){
+    let dialogRef = this.dialog.open(DialogComponent, {
+      data: {
+        content: new String("Are you sure you want to cancel this session?")
+      }
+    })
+    dialogRef.afterClosed().subscribe((response) => {
+      console.log(response);
+      if("ok" == response){
+        this.firebaseService.cancelSession(this.sessionId);
+        this.router.navigate(['/sessions'])
       }
     })
   }

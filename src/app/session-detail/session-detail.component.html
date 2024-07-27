@@ -19,7 +19,7 @@
     </mat-toolbar>
 
     <h1 class="anton-sc-regular tile-text" style="text-align: center; color: white;">Workout session with {{username}}</h1>
-    <div class="session-detail-card">
+    <div class="session-detail-card" [ngStyle] = "{'height': (status == 'Confirmed') ? '68vh' : '58vh'}">
         <p class="anton-sc-regular tile-text">Client: {{username}}</p><br/>
         <p class="anton-sc-regular tile-text">Location: {{location}}</p><br/>
         <p class="anton-sc-regular tile-text">Workout session requested for:<br/> {{date}} <br/>Time: {{time}}</p><br/>
@@ -27,8 +27,14 @@
         <p class="anton-sc-regular tile-text" style="font-size: 20px;">Based on your experience and the number of hours requested 
             for this session, you can earn ₹{{rate}}/-.</p>
 
-        <div class="confirm-button" (click)="confirmSession()">
+        <div *ngIf = "status == 'Pending'" class="confirm-button" (click)="confirmSession()">
             <p class="anton-sc-regular tile-text confirm-text">Confirm Session!</p><br/>
+        </div>
+        <div *ngIf = "status == 'Confirmed'" class="confirm-button" (click)="startSession()">
+            <p class="anton-sc-regular tile-text confirm-text">Start Session</p><br/>
+        </div>
+        <div *ngIf = "status == 'Confirmed'" class="confirm-button" (click)="cancelSession()">
+            <p class="anton-sc-regular tile-text confirm-text">Cancel Session</p><br/>
         </div>
     </div>
 

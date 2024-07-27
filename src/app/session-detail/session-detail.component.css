@@ -20,11 +20,11 @@ body{
     color: white;
     text-align: center;
     padding-top: 20px;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .confirm-button{
     background-color: black; 
-    height: 5rem;
+    height: 3.5rem;
     border-radius: 10px;
 }

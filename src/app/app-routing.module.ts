@@ -7,6 +7,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { RegisterComponent } from './register/register.component';
 import { SessionsComponent } from './sessions/sessions.component';
 import { SessionDetailComponent } from './session-detail/session-detail.component';
+import { BookSessionComponent } from './book-session/book-session.component';
 
 const routes: Routes = [
   {path: '', component: LandingPageComponent},
@@ -15,7 +16,8 @@ const routes: Routes = [
   {path: 'home', component: HomePageComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'sessions', component: SessionsComponent},
-  {path: 'session-detail/:id', component: SessionDetailComponent}
+  {path: 'session-detail/:id', component: SessionDetailComponent},
+  {path: 'book-session', component: BookSessionComponent}
 ];
 
 @NgModule({
