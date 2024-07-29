@@ -31,9 +31,9 @@ export class RegisterComponent {
   about: string = "";
   avail: string = "";
   rates: string[] = [
-    "₹200 - ₹400",
-    "₹400 - ₹600",
-    "₹600 - ₹800"
+    "₹250",
+    "₹450",
+    "₹700"
   ]
   nextPage: boolean = false;
   selected: any;

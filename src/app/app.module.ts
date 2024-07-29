@@ -51,7 +51,7 @@ import { BookSessionComponent } from './book-session/book-session.component';
     MatCardModule,
     MatSnackBarModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

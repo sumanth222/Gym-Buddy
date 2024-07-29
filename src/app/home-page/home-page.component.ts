@@ -20,6 +20,7 @@ export class HomePageComponent {
     if(userObj.role == "trainer"){
       this.isTrainer = true;
     }
+    console.log("ID of user is: "+userObj.id)
   }
 
   registerPage(){
@@ -28,5 +29,9 @@ export class HomePageComponent {
 
   sessionsPage(){
     this.router.navigate(['/sessions'])
+  }
+
+  bookNewSession(){
+    this.router.navigate(['/book-session'])
   }
 }

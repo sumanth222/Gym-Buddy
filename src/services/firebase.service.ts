@@ -234,4 +234,22 @@ export class FirebaseService {
       console.log("Error occurred while updating session as started: "+error);
     })
   }
+
+  async createSession(userId: string, reqDate: string, startTime: string, endTime: string, location: string,
+    landmark: string, expIndex: number, desc: string
+  ){
+    const db = firebase.firestore();
+
+    await addDoc(collection(this.firestore, "sessions"), {
+        userInfoId: userId,
+        createdDate: new Date().toDateString(),
+        date: reqDate,
+        startTime: startTime,
+        endTime: endTime,
+        location: location,
+        landmark: landmark,
+        expIndex: expIndex,
+        description: desc,
+    })
+  }
 }

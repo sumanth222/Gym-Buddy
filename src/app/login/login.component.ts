@@ -7,6 +7,7 @@ import firebase from "firebase/compat/app";
 import { firebaseConfig } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { UserObject } from '../objects/user-object';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -20,7 +21,7 @@ export class LoginComponent {
   auth: any;
 
   constructor(private firebaseService: FirebaseService, private dialog: MatDialog,
-    private router: Router
+    private router: Router, private snackBar: MatSnackBar
   ){
     this.app = firebase.initializeApp(firebaseConfig);
     this.auth = getAuth(this.app);
@@ -70,6 +71,7 @@ export class LoginComponent {
       const provider = new PhoneAuthProvider(this.auth);
       this.verificationId = await provider.verifyPhoneNumber("+91" + this.phoneNumber, appVerifier);
       this.disabled = false;
+      this.buttonText = "Login"
     }
   }
 
@@ -80,6 +82,7 @@ export class LoginComponent {
           console.log("Logged in user is" +user.id)
         })
         this.router.navigate(['/home'])
+        this.snackBar.open("Log in success!", "OK");
       })
       .catch((error: any) => {
         console.log("Error while logging in "+error);

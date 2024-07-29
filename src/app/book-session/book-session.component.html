@@ -18,14 +18,15 @@
         </div>
     </mat-toolbar>
 
-    <div>
+    <div [style.height.px] = "screenHeight" style="overflow-y: scroll;">
         <h1 class="anton-sc-regular tile-text" style="text-align: center; color: white;">Book new session</h1>
 
-        <p class="anton-sc-regular tile-text" style="text-align: center; color: white;">1. Select Date and Time</p>
-        <p class="anton-sc-regular tile-text" style="text-align: center; color: white;">When do you want to schedule your session?</p>        
+        <h2 class="anton-sc-regular tile-text" style="text-align: center; color: white;">1. Select Date and Time</h2>
+        <p class="anton-sc-regular tile-text" style="text-align: center; color: white;">When do you want to schedule your session?</p>  
+        <form class="session-form">             
         <mat-form-field class="bns">
             <mat-label>Choose a date</mat-label>
-            <input matInput [matDatepicker]="picker">
+            <input matInput [matDatepicker]="picker" name="date" [(ngModel)] = "date" (dateChange)="dateChanged($event)">
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
@@ -50,5 +51,45 @@
               }
             </mat-select>
           </mat-form-field>
+
+
+          <h2 class="anton-sc-regular tile-text" style="text-align: center; color: white;">2. Session Details</h2>
+
+            <mat-form-field class="bns">
+              <mat-label>Gym Location</mat-label>
+              <mat-hint style="color: white;">Enter the entire location of the gym, so that trainers near it would accept your request.</mat-hint>
+              <textarea matInput placeholder="Entire gym location" name="location" [(ngModel)]="location"></textarea>
+            </mat-form-field>
+            <br/><br/><br/>
+
+            <mat-form-field class="bns">
+              <mat-label>Landmark</mat-label>
+              <mat-hint style="color: white;">A nearby landmark</mat-hint>
+              <input matInput placeholder="Landmark" name="landmark" [(ngModel)]="landmark"/>
+            </mat-form-field>
+
+            <p class="anton-sc-regular tile-text" style="text-align: center; color: white;">Your preferred experience of the trainer</p>
+            <mat-form-field class="bns">
+              <mat-label>Preferred trainer's experience</mat-label>
+              <mat-hint style="color: white;">Rate per hour: {{rates[hintIndex]}}. (Varies based on experience)</mat-hint>
+              <mat-select [(value)]="selectedExp">
+                @for (exp of experiences; track $index) {
+                  <mat-option [value]="exp" (click) ="selectExp($index)">{{exp}}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+
+            <br/><br/><br/>
+
+            <mat-form-field class="bns">
+              <mat-label>Description</mat-label>
+              <mat-hint style="color: white;">This would help your trainer prepare in advance.</mat-hint>
+              <textarea matInput placeholder="Ex: Lower body workout, focusing on calves" name="desc" [(ngModel)]="desc"></textarea>
+            </mat-form-field>
+
+            <div class="book-session anton-sc-regular bns" (click) = "requestSession()">
+              <span style="margin-top: 45%;color: white;">Request session</span>
+          </div>
+          </form>
     </div>
 </body>
