@@ -5,6 +5,7 @@ import { FirebaseService } from 'src/services/firebase.service';
 import { TrainerInfoService } from 'src/services/trainer-info.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
+import { UtilityServiceService } from '../util/utility-service.service';
 
 @Component({
   selector: 'app-session-detail',
@@ -20,11 +21,11 @@ export class SessionDetailComponent {
   description : string = "";
   location: string = "";
   rate: number = 0;
-  hours: number = 0;
+  hours: string = "";
   status: string = "";
 
   constructor(private route: ActivatedRoute, private firebaseService: FirebaseService, private trainerObjService: TrainerInfoService,
-    private dialog: MatDialog, private router: Router
+    private dialog: MatDialog, private router: Router, private utilityService: UtilityServiceService
   ){
 
   }
@@ -32,17 +33,18 @@ export class SessionDetailComponent {
   async ngOnInit(){
     this.sessionId = this.route.snapshot.paramMap.get('id');
 
+
     console.log(this.trainerObjService.getTrainerObj().rate);
     await this.firebaseService.getSessionById(this.sessionId).then((session) => {
-      this.username = session.user_id;
-      this.date = session.requested_date.toDateString();
-      this.time = session.requested_time;
+      this.username = session.username;
+      this.date = session.requested_date;
+      this.time = session.startTime;
       this.description = session.description;
-      this.location = session.location;
+      this.location = session.locality;
       this.hours = session.hours
       this.status = session.status;
     })
-    this.rate = parseInt(this.trainerObjService.getTrainerObj().rate) * this.hours;
+    this.rate = parseInt(this.trainerObjService.getTrainerObj().rate) * this.utilityService.getHours(this.hours);
   }
 
   confirmSession(){

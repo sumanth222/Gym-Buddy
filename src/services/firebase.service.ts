@@ -154,22 +154,26 @@ export class FirebaseService {
     const db = firebase.firestore();
     let pendingSessions: SessionObject[] = [];
     
-    await db.collection("sessions").where("status", "==", status).get().then((querySnapshot) => {
+    await db.collection("sessions").where("Status", "==", status).get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        let timestamp = new Timestamp(doc.data().requested_date.seconds, doc.data().requested_date.nanoseconds);
-        let created_date = new Timestamp(doc.data().created_date.seconds, doc.data().created_date.nanoseconds);
         pendingSessions.push(new SessionObject(
           doc.id,
-          doc.data().user_id,
-          doc.data().trainer_id,
-          doc.data().status,
-          timestamp.toDate(),
-          doc.data().requested_time,
-          doc.data().location,
-          doc.data().feedback,
-          created_date.toDate(),
-          doc.data().description,
-          doc.data().hours
+          doc?.data()?.UserInfoID,
+          doc?.data()?.Username,
+          doc?.data()?.TrainerID,
+          doc?.data()?.Status,
+          doc?.data()?.RequestedDate,
+          doc?.data()?.Feedback,
+          doc?.data()?.CreatedDate,
+          doc?.data()?.Description,
+          doc?.data()?.Hours,
+          doc?.data()?.Gymname,
+          doc?.data()?.Locality,
+          doc?.data()?.Landmark,
+          doc?.data()?.State,
+          doc?.data()?.Pincode,
+          doc?.data()?.StartTime,
+          doc?.data()?.EndTime,
         ));
       })
     })
@@ -181,20 +185,24 @@ export class FirebaseService {
     let session: any;
     
     await db.collection("sessions").doc(id).get().then((doc) => {
-        let timestamp = new Timestamp(doc?.data()?.requested_date.seconds, doc?.data()?.requested_date.nanoseconds);
-        let created_date = new Timestamp(doc?.data()?.created_date.seconds, doc?.data()?.created_date.nanoseconds);
         session = new SessionObject(
           doc.id,
-          doc?.data()?.user_id,
-          doc?.data()?.trainer_id,
-          doc?.data()?.status,
-          timestamp.toDate(),
-          doc?.data()?.requested_time,
-          doc?.data()?.location,
-          doc?.data()?.feedback,
-          created_date.toDate(),
-          doc?.data()?.description,
-          doc?.data()?.hours
+          doc?.data()?.UserInfoID,
+          doc?.data()?.Username,
+          doc?.data()?.TrainerID,
+          doc?.data()?.Status,
+          doc?.data()?.RequestedDate,
+          doc?.data()?.Feedback,
+          doc?.data()?.CreatedDate,
+          doc?.data()?.Description,
+          doc?.data()?.Hours,
+          doc?.data()?.Gymname,
+          doc?.data()?.Locality,
+          doc?.data()?.Landmark,
+          doc?.data()?.State,
+          doc?.data()?.Pincode,
+          doc?.data()?.StartTime,
+          doc?.data()?.EndTime,
         );
       })
     return session;
@@ -204,7 +212,7 @@ export class FirebaseService {
     const db = firebase.firestore();
 
     await db.collection("sessions").doc(docID).update({
-      status : "Confirmed",
+      Status : "Confirmed",
       trainer_id: trainerId
     }).then((response) => {
     }).catch((error) => {
@@ -227,7 +235,7 @@ export class FirebaseService {
     const db = firebase.firestore();
 
     await db.collection("sessions").doc(docID).update({
-      status : "Pending",
+      Status : "Pending",
       trainer_id: ""
     }).then((response) => {
     }).catch((error) => {
@@ -235,21 +243,30 @@ export class FirebaseService {
     })
   }
 
-  async createSession(userId: string, reqDate: string, startTime: string, endTime: string, location: string,
-    landmark: string, expIndex: number, desc: string
+  async createSession(userId: string, username: string, reqDate: string, startTime: string, endTime: string,
+    landmark: string, expIndex: number, desc: string, gymname: string, locality: string, pincode: string, state: string,
+    hours: string
   ){
     const db = firebase.firestore();
 
     await addDoc(collection(this.firestore, "sessions"), {
-        userInfoId: userId,
-        createdDate: new Date().toDateString(),
-        date: reqDate,
-        startTime: startTime,
-        endTime: endTime,
-        location: location,
-        landmark: landmark,
-        expIndex: expIndex,
-        description: desc,
+        UserInfoID: userId,
+        Username: username,
+        TrainerID: "",
+        CreatedDate: new Date().toDateString(),
+        RequestedDate: reqDate,
+        StartTime: startTime,
+        EndTime: endTime,
+        Gymname: gymname,
+        Locality: locality,
+        Pincode: pincode,
+        Landmark: landmark,
+        State: state,
+        ExpIndex: expIndex,
+        Description: desc,
+        Status: "Pending",
+        Feedback: "",
+        Hours: hours
     })
   }
 }

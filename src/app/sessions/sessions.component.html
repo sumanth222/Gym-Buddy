@@ -18,7 +18,8 @@
         </div>
     </mat-toolbar>
 
-    <div>
+    <div [style.height.px] = "screenHeight" style="overflow-y: scroll;">
+
         <h1 class="anton-sc-regular tile-text" style="text-align: center; color: white;">Sessions</h1>
         <mat-toolbar style="background-color: black;padding-right: 0px;padding-left: 0px;">
             <div class="home-button toolbar-button-session" (click)="getPendingSessions()">
@@ -29,7 +30,7 @@
             </div>
         </mat-toolbar>
         <mat-toolbar style="background-color: black;padding-right: 0px;padding-left: 0px;">
-            <div class="about-button toolbar-button-session">
+            <div class="about-button toolbar-button-session" (click)="bookNewSession()">
                 <p class="about-button-text toolbar-text">Book new session</p>
             </div>
             <div class="contact-button toolbar-button-session" (click)="getCompletedSessions()">
@@ -44,18 +45,19 @@
         
         <p *ngIf = "pendingSessions.length == 0" class="anton-sc-regular tile-text" style="text-align: center; color: white;">No sessions found :(</p>
 
-        <div class="sessions-cards">
-            @for(session of pendingSessions; track session){
-            <mat-card class="session-card" (click) = "goToSession(session.id)">
-                <mat-card-content style="margin-top: 20px;">
-                  <p class="anton-sc-regular tile-text">Requested By: {{session.user_id}}</p>
-                  <p class="anton-sc-regular tile-text">Date: {{session.requested_date.toDateString()}} | Time: {{session.requested_time}}</p>
-                  <p class="anton-sc-regular tile-text">Location: {{session.location}}</p>
-                  <p class="anton-sc-regular tile-text">Status: {{session.status}} </p>
-                  <p class="anton-sc-regular tile-text" style="text-align: center; color: white;">Click to know more</p>
-                </mat-card-content>
-            </mat-card>
-        }
+            <div class="sessions-cards">
+                @for(session of pendingSessions; track session){
+                <mat-card class="session-card" (click) = "goToSession(session.id)">
+                    <mat-card-content style="margin-top: 20px;">
+                    <p class="anton-sc-regular tile-text">Requested By: {{session.username}}</p>
+                    <p class="anton-sc-regular tile-text">Date: {{session.requested_date}} | Time: {{session.startTime}}</p>
+                    <p class="anton-sc-regular tile-text">Duration: {{session.hours}} Hrs</p>
+                    <p class="anton-sc-regular tile-text">Location: {{session.gymName}} | {{session.locality}}</p>
+                    <p class="anton-sc-regular tile-text">Status: {{session.status}} </p>
+                    <p class="anton-sc-regular tile-text" style="text-align: center; color: white;">Click to know more</p>
+                    </mat-card-content>
+                </mat-card>
+            }
         </div>
     </div>
 </body>

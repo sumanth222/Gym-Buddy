@@ -56,16 +56,40 @@
           <h2 class="anton-sc-regular tile-text" style="text-align: center; color: white;">2. Session Details</h2>
 
             <mat-form-field class="bns">
-              <mat-label>Gym Location</mat-label>
-              <mat-hint style="color: white;">Enter the entire location of the gym, so that trainers near it would accept your request.</mat-hint>
-              <textarea matInput placeholder="Entire gym location" name="location" [(ngModel)]="location"></textarea>
+              <mat-label>Gym name</mat-label>
+              <mat-hint style="color: white;">Ex: CULT Indiranagar</mat-hint>
+              <input matInput placeholder="Your gym name" name="gymname" [(ngModel)]="gymname"/>
             </mat-form-field>
-            <br/><br/><br/>
+            <br/>
+            <br/>
+            <mat-form-field class="bns">
+              <mat-label>Gym Locality</mat-label>
+              <mat-hint style="color: white;">Ex: 100 ft Road, Indiranagar</mat-hint>
+              <input matInput placeholder="Street number/name" name="locality" [(ngModel)]="locality"/>
+            </mat-form-field>
+            
+            <br/><br/>
+            <mat-form-field class="bns">
+              <mat-label>Pincode</mat-label>
+              <mat-hint style="color: white;">Ex: 500123</mat-hint>
+              <input matInput placeholder="Pincode of your gym" name="pincode" [(ngModel)]="pincode"/>
+            </mat-form-field>
+            <br/><br/>
 
             <mat-form-field class="bns">
               <mat-label>Landmark</mat-label>
               <mat-hint style="color: white;">A nearby landmark</mat-hint>
               <input matInput placeholder="Landmark" name="landmark" [(ngModel)]="landmark"/>
+            </mat-form-field>
+
+            <br/><br/>
+            <mat-form-field class="bns">
+              <mat-label>State</mat-label>
+              <mat-select [(value)]="state">
+                @for (state of states; track $index) {
+                  <mat-option [value]="state" (click) ="selectState($index)">{{state}}</mat-option>
+                }
+              </mat-select>
             </mat-form-field>
 
             <p class="anton-sc-regular tile-text" style="text-align: center; color: white;">Your preferred experience of the trainer</p>

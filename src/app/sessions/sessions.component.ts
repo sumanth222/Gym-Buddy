@@ -11,11 +11,13 @@ import { Router } from '@angular/router';
 export class SessionsComponent {
 
   pendingSessions: SessionObject[] = [];
+  screenHeight: number = 0;
 
   constructor(private firebaseService: FirebaseService, private router: Router){}
 
   async ngOnInit(){
     this.getPendingSessions();
+    this.screenHeight = screen.height - 56;
     console.log(this.pendingSessions.length);
   }
 
@@ -40,5 +42,9 @@ export class SessionsComponent {
   goToSession(id: string){
     console.log("ID is: "+id);
     this.router.navigate(['/session-detail', id]);
+  }
+
+  bookNewSession(){
+    this.router.navigate(['/book-session'])
   }
 }
