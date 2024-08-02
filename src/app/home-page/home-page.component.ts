@@ -34,4 +34,8 @@ export class HomePageComponent {
   bookNewSession(){
     this.router.navigate(['/book-session'])
   }
+
+  findTrainer(){
+    this.router.navigate(['find-trainer'])
+  }
 }

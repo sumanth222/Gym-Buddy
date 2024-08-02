@@ -8,6 +8,7 @@ import { RegisterComponent } from './register/register.component';
 import { SessionsComponent } from './sessions/sessions.component';
 import { SessionDetailComponent } from './session-detail/session-detail.component';
 import { BookSessionComponent } from './book-session/book-session.component';
+import { FindTrainerComponent } from './find-trainer/find-trainer.component';
 
 const routes: Routes = [
   {path: '', component: LandingPageComponent},
@@ -17,7 +18,8 @@ const routes: Routes = [
   {path: 'register', component: RegisterComponent},
   {path: 'sessions', component: SessionsComponent},
   {path: 'session-detail/:id', component: SessionDetailComponent},
-  {path: 'book-session', component: BookSessionComponent}
+  {path: 'book-session', component: BookSessionComponent},
+  {path: 'find-trainer', component: FindTrainerComponent}
 ];
 
 @NgModule({

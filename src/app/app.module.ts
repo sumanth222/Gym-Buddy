@@ -11,6 +11,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,6 +24,7 @@ import {MatButtonModule} from '@angular/material/button';
 import { SessionsComponent } from './sessions/sessions.component';
 import { SessionDetailComponent } from './session-detail/session-detail.component';
 import { BookSessionComponent } from './book-session/book-session.component';
+import { FindTrainerComponent } from './find-trainer/find-trainer.component';
 
 
 @NgModule({
@@ -35,7 +37,8 @@ import { BookSessionComponent } from './book-session/book-session.component';
     DialogComponent,
     SessionsComponent,
     SessionDetailComponent,
-    BookSessionComponent
+    BookSessionComponent,
+    FindTrainerComponent
   ],
   imports: [
     BrowserModule,
@@ -52,6 +55,7 @@ import { BookSessionComponent } from './book-session/book-session.component';
     MatSnackBarModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatAutocompleteModule
   ],
   providers: [],
   bootstrap: [AppComponent]

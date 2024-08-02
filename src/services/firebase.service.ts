@@ -269,4 +269,29 @@ export class FirebaseService {
         Hours: hours
     })
   }
+
+  async getAllGyms(){
+    const db = firebase.firestore();
+    let gymsAndTrainers: Map<string, string[]> = new Map<string, string[]>();
+
+    await db.collection("trainer-info").get().then((querysnapshot) => {
+      console.log(querysnapshot.size);
+      querysnapshot.forEach((doc) => {
+        let gym = doc.data().gymname;
+          if(gym != undefined && gymsAndTrainers.has(gym)){
+            let trainers : any = gymsAndTrainers.get(gym);
+            let trainerToPush = doc.data().username+";"+doc.id;
+            trainers?.push(trainerToPush);
+            gymsAndTrainers.set(gym, trainers);
+          }
+          else{
+            let trainer: string[] = [];
+            trainer.push(doc.data().username+";"+doc.id);
+            gymsAndTrainers.set(gym, trainer);
+          }
+        }
+      )
+    })
+    return gymsAndTrainers;
+  }
 }
