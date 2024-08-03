@@ -272,21 +272,31 @@ export class FirebaseService {
 
   async getAllGyms(){
     const db = firebase.firestore();
-    let gymsAndTrainers: Map<string, string[]> = new Map<string, string[]>();
+    let gymsAndTrainers: Map<string, TrainerObject[]> = new Map<string, TrainerObject[]>();
 
     await db.collection("trainer-info").get().then((querysnapshot) => {
       console.log(querysnapshot.size);
       querysnapshot.forEach((doc) => {
         let gym = doc.data().gymname;
+        let trainerToPush = new TrainerObject();
+        trainerToPush.username = doc.data().username;
+        trainerToPush.rate = doc.data().rate;
+        trainerToPush.meridian = doc.data().meridian;
+        trainerToPush.trainerUserId = doc.data().id;
+        trainerToPush.id = doc.id;
+        trainerToPush.gymname = doc.data().gymname;
+        trainerToPush.exp = parseFloat((parseInt(doc.data().experience)/12).toFixed(1));
+        trainerToPush.bio = doc.data().bio;
+        trainerToPush.availtime = doc.data().availabilityTime;
+        trainerToPush.availdays = doc.data().availabilityDays;
+        console.log("Pushing trainer: "+trainerToPush.username)
           if(gym != undefined && gymsAndTrainers.has(gym)){
             let trainers : any = gymsAndTrainers.get(gym);
-            let trainerToPush = doc.data().username+";"+doc.id;
             trainers?.push(trainerToPush);
             gymsAndTrainers.set(gym, trainers);
           }
           else{
-            let trainer: string[] = [];
-            trainer.push(doc.data().username+";"+doc.id);
+            let trainer: TrainerObject[] = [trainerToPush];
             gymsAndTrainers.set(gym, trainer);
           }
         }

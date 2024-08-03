@@ -2,21 +2,15 @@ export class TrainerObject{
     availdays: string = ""
     availtime: string = ""
     bio: string = ""
-    exp: string = ""
+    exp: number = 0
     id: string = ""
     meridian: string = ""
     rate: string = ""
     username: string = ""
+    gymname: string = ""
+    trainerUserId: string = ""
 
     constructor(){
-        this.availdays = "";
-        this.availtime = "";
-        this.bio = "";
-        this.exp = "";
-        this.id = "";
-        this.meridian = "";
-        this.rate = "";
-        this.username = "";
     }
 
 }
