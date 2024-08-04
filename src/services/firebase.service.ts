@@ -304,4 +304,28 @@ export class FirebaseService {
     })
     return gymsAndTrainers;
   }
+
+  async requestForSession(trainer: TrainerObject, user: UserObject){
+    const db = firebase.firestore();
+
+  //   await addDoc(collection(this.firestore, "sessions"), {
+  //     UserInfoID: user.id,
+  //     Username: user.username,
+  //     TrainerID: trainer.id,
+  //     CreatedDate: new Date().toDateString(),
+  //     RequestedDate: reqDate,
+  //     StartTime: startTime,
+  //     EndTime: endTime,
+  //     Gymname: gymname,
+  //     Locality: locality,
+  //     Pincode: pincode,
+  //     Landmark: landmark,
+  //     State: state,
+  //     ExpIndex: expIndex,
+  //     Description: desc,
+  //     Status: "Pending",
+  //     Feedback: "",
+  //     Hours: hours
+  // })
+  }
 }

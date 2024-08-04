@@ -5,6 +5,10 @@ import { Observable } from 'rxjs';
 import { FirebaseService } from 'src/services/firebase.service';
 import { DialogComponent } from '../dialog/dialog.component';
 import { TrainerObject } from '../objects/trainer-object';
+import { RequestTrainerServiceService } from 'src/services/request-trainer-service.service';
+import { Router } from '@angular/router';
+import { UserObject } from '../objects/user-object';
+import { UserServiceService } from 'src/services/user-service.service';
 
 @Component({
   selector: 'app-find-trainer',
@@ -17,8 +21,17 @@ export class FindTrainerComponent {
   filteredGyms: string[] = [];
   userGym: string = "";
   trainers: TrainerObject[] | undefined = [];
+  startTimes: string[] = ['5:00 AM','5:30 AM','6:00 AM','6:30 AM','7:00 AM','7:30 AM','8:00 AM','8:30 AM','9:00 AM','9:30 AM','10:00 AM',
+    '10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM',
+    '5:00 PM','5:30 PM','6:00 PM','6:30 PM','7:00 PM','7:30 PM','8:00 PM','8:30 PM','9:00 PM'];
+  
+  endTimes: string[] = ['6:00 AM','6:30 AM','7:00 AM','7:30 AM','8:00 AM','8:30 AM','9:00 AM','9:30 AM','10:00 AM',
+    '10:30 AM','11:00 AM','11:30 AM','12:00 PM','12:30 PM','1:00 PM','1:30 PM','2:00 PM','2:30 PM','3:00 PM','3:30 PM','4:00 PM','4:30 PM',
+    '5:00 PM','5:30 PM','6:00 PM','6:30 PM','7:00 PM','7:30 PM','8:00 PM','8:30 PM','9:00 PM','9:30 PM','10:00 PM'];
 
-  constructor(private firebaseService: FirebaseService, private dialog: MatDialog){}
+  constructor(private firebaseService: FirebaseService, private dialog: MatDialog, private requestTrainerServ: RequestTrainerServiceService,
+    private router: Router
+  ){}
 
   async ngOnInit(){
     await this.firebaseService.getAllGyms().then((gymsAndTrainers) => {
@@ -59,5 +72,12 @@ export class FindTrainerComponent {
         console.log(trainer.username)
       })
     }
+  }
+
+  requestSession(trainer: TrainerObject){
+    console.log("Clicked on trainer: "+trainer.username);
+    this.requestTrainerServ.setTrainer(trainer);
+    this.router.navigate(['/request-trainer'])
+    
   }
 }

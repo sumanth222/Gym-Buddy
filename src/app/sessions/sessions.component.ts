@@ -47,4 +47,8 @@ export class SessionsComponent {
   bookNewSession(){
     this.router.navigate(['/book-session'])
   }
+
+  getRequestedSessions(){
+    
+  }
 }

@@ -1,0 +1,62 @@
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton+SC&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="main-container" style="height: 100%;">
+        <div id="recaptcha-container"></div>
+        <h1 class="anton-sc-regular title subtitle" style="color: white;">Great choice!</h1>
+        <div class="session-detail-card">
+            <div style="height: 80%; overflow: scroll;">
+            <p class="anton-sc-regular tile-text">Trainer name: {{trainer.username}}</p>
+                <p class="anton-sc-regular tile-text">Experience: {{trainer.exp}} years</p>
+                <p class="anton-sc-regular tile-text">Availability: {{trainer.availdays}} | {{trainer.availtime}} | {{trainer.meridian}}</p>
+                <p class="anton-sc-regular tile-text">Works out at: {{trainer.gymname}} </p>
+                <p class="anton-sc-regular tile-text">About: {{trainer.bio}} </p>
+                <br/>
+                <p class="anton-sc-regular tile-text" style="text-align: center; color: white;">Choose your preferred date and timings within the availability of the trainer</p>
+                
+                <mat-form-field class="bns">
+                    <mat-label>Choose a date</mat-label>
+                    <input matInput [matDatepicker]="picker" name="date" [(ngModel)] = "date" (dateChange)="dateChanged($event)">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+                <div class="date-calendar-container">
+                <div class="date-calendar">
+                    <p class="anton-sc-regular tile-text" style="text-align: center; color: white;">Start Time</p>
+                    <mat-form-field class="bns">
+                        <mat-label>Session start time</mat-label>
+                        <mat-select [(value)]="startTime">
+                        @for (starttime of startTimes; track starttime) {
+                            <mat-option [value]="starttime" (click) ="populateDuration()">{{starttime}}</mat-option>
+                        }
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="date-calendar">
+                    <p class="anton-sc-regular tile-text" style="text-align: center; color: white;">End Time</p>
+                    <mat-form-field class="bns">
+                        <mat-label>Session end time</mat-label>
+                        <mat-select [(value)]="endTime">
+                        @for (endtime of endTimes; track endtime) {
+                            <mat-option [value]="endtime" (click) ="populateDuration()">{{endtime}}</mat-option>
+                        }
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <p  class= "anton-sc-regular" style="color: white; font-size: 15px; text-align: center;">Session duration: {{duration}} hour(s)</p>
+
+                </div>
+            </div>
+            <div style="height: 20%;">
+                <div class="request-session anton-sc-regular" (click)="requestForSession()">
+                    <span style="margin-top: 45%;color: white;">Request for a session</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

@@ -38,7 +38,10 @@
             </div>
         </mat-toolbar>
         <mat-toolbar style="background-color: black;padding-right: 0px;padding-left: 0px;">
-            <div class="contact-button toolbar-button-session" style="width: 100%;" (click)="getCompletedSessions()">
+            <div class="about-button toolbar-button-session" (click)="getRequestedSessions()">
+                <p class="about-button-text toolbar-text">Requested Sessions</p>
+            </div>
+            <div class="contact-button toolbar-button-session" style="width: 50%;" (click)="getCompletedSessions()">
                 <p class="contact-button-text toolbar-text">In-progress sessions</p>
             </div>
         </mat-toolbar>

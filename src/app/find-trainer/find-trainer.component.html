@@ -35,7 +35,7 @@
 
             <div class="sessions-cards">
                 @for(trainer of trainers; track trainer){
-                <mat-card class="session-card">
+                <mat-card class="session-card" (click)="requestSession(trainer)">
                     <mat-card-content style="margin-top: 20px;">
                     <p class="anton-sc-regular tile-text">Trainer name: {{trainer.username}}</p>
                     <p class="anton-sc-regular tile-text">Experience: {{trainer.exp}} years</p>

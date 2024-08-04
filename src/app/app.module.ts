@@ -25,6 +25,7 @@ import { SessionsComponent } from './sessions/sessions.component';
 import { SessionDetailComponent } from './session-detail/session-detail.component';
 import { BookSessionComponent } from './book-session/book-session.component';
 import { FindTrainerComponent } from './find-trainer/find-trainer.component';
+import { RequestTrainerComponent } from './request-trainer/request-trainer.component';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { FindTrainerComponent } from './find-trainer/find-trainer.component';
     SessionsComponent,
     SessionDetailComponent,
     BookSessionComponent,
-    FindTrainerComponent
+    FindTrainerComponent,
+    RequestTrainerComponent
   ],
   imports: [
     BrowserModule,
