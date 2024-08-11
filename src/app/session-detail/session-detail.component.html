@@ -20,22 +20,28 @@
 
     <h1 class="anton-sc-regular tile-text" style="text-align: center; color: white;">Workout session with {{username}}</h1>
     <div class="session-detail-card">
-        <p class="anton-sc-regular tile-text">Client: {{username}}</p><br/>
-        <p class="anton-sc-regular tile-text">Location: {{location}}</p><br/>
-        <p class="anton-sc-regular tile-text">Workout session requested for:<br/> {{date}} <br/>Time: {{time}}</p><br/>
-        <p class="anton-sc-regular tile-text">Duration: {{hours}} hrs</p>
-        <p class="anton-sc-regular tile-text">Description: {{description}}</p>
-        <p class="anton-sc-regular tile-text" style="font-size: 20px;">Based on your experience and the number of hours requested 
-            for this session, you can earn ₹{{rate}}/-.</p>
-
-        <div *ngIf = "status == 'Pending'" class="confirm-button" (click)="confirmSession()">
-            <p class="anton-sc-regular tile-text confirm-text">Confirm Session!</p><br/>
+        <div style="height: 75%; overflow-y: scroll;">
+            <p class="anton-sc-regular tile-text">Client: {{username}}</p><br/>
+            <p class="anton-sc-regular tile-text">Location: {{location}}</p><br/>
+            <p class="anton-sc-regular tile-text">Workout session requested for:<br/> Date: {{date}} <br/>Time: {{time}}</p>
+            <p class="anton-sc-regular tile-text">Duration: {{hours}} hrs</p><br/>
+            <p class="anton-sc-regular tile-text">Description: {{description}}</p>
+            <p class="anton-sc-regular tile-text" style="font-size: 20px;">Based on your experience and the number of hours requested 
+                for this session, you can earn ₹{{rate}}/-.</p>
         </div>
-        <div *ngIf = "status == 'Confirmed'" class="confirm-button" (click)="startSession()">
-            <p class="anton-sc-regular tile-text confirm-text">Start Session</p><br/>
-        </div>
-        <div *ngIf = "status == 'Confirmed'" class="confirm-button" (click)="cancelSession()">
-            <p class="anton-sc-regular tile-text confirm-text">Cancel Session</p><br/>
+        <div style="height: 25%;">
+            <div *ngIf = "status == 'Pending' || status == 'Requested'" class="confirm-button" (click)="confirmSession()">
+                <p class="anton-sc-regular tile-text confirm-text">Confirm Session!</p><br/>
+            </div>
+            <div *ngIf = "status == 'Confirmed'" class="confirm-button" (click)="startSession()">
+                <p class="anton-sc-regular tile-text confirm-text">Start Session</p><br/>
+            </div>
+            <div *ngIf = "status == 'Confirmed' || status == 'Requested' || status == 'Pending'" class="confirm-button" (click)="cancelSession()">
+                <p class="anton-sc-regular tile-text confirm-text">Cancel Session</p><br/>
+            </div>
+            <div *ngIf = "status == 'Started'" class="confirm-button" (click)="endSession()">
+                <p class="anton-sc-regular tile-text confirm-text">End Session</p><br/>
+            </div>
         </div>
     </div>
 

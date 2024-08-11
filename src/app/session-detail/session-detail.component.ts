@@ -6,6 +6,7 @@ import { TrainerInfoService } from 'src/services/trainer-info.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
 import { UtilityServiceService } from '../util/utility-service.service';
+import { TrainerObject } from '../objects/trainer-object';
 
 @Component({
   selector: 'app-session-detail',
@@ -23,6 +24,7 @@ export class SessionDetailComponent {
   rate: number = 0;
   hours: string = "";
   status: string = "";
+  trainerObj: TrainerObject = new TrainerObject();
 
   constructor(private route: ActivatedRoute, private firebaseService: FirebaseService, private trainerObjService: TrainerInfoService,
     private dialog: MatDialog, private router: Router, private utilityService: UtilityServiceService
@@ -32,6 +34,7 @@ export class SessionDetailComponent {
 
   async ngOnInit(){
     this.sessionId = this.route.snapshot.paramMap.get('id');
+    this.trainerObj = this.trainerObjService.getTrainerObj();
 
 
     console.log(this.trainerObjService.getTrainerObj().rate);
@@ -40,15 +43,14 @@ export class SessionDetailComponent {
       this.date = session.requested_date;
       this.time = session.startTime;
       this.description = session.description;
-      this.location = session.locality;
+      this.location = session.gymName + ((session.locality != "") ? " | "+session.locality : "");
       this.hours = session.hours
       this.status = session.status;
+      this.rate = session.rate - 50;
     })
-    this.rate = parseInt(this.trainerObjService.getTrainerObj().rate) * this.utilityService.getHours(this.hours);
   }
 
   confirmSession(){
-    let trainerId = this.trainerObjService.getTrainerObj().id;
 
     let dialogRef = this.dialog.open(DialogComponent, {
       data: {
@@ -58,7 +60,8 @@ export class SessionDetailComponent {
     dialogRef.afterClosed().subscribe((response) => {
       console.log(response);
       if("ok" == response){
-        this.firebaseService.confirmSession(this.sessionId, trainerId);
+        console.log("TID: "+this.trainerObj.id)
+        this.firebaseService.confirmSession(this.sessionId, this.trainerObj.id);
         this.router.navigate(['/sessions'])
       }
     })
@@ -73,7 +76,8 @@ export class SessionDetailComponent {
     dialogRef.afterClosed().subscribe((response) => {
       console.log(response);
       if("ok" == response){
-        this.firebaseService.startSession(this.sessionId);
+        console.log("TrainerID is:"+this.trainerObj.id)
+        this.firebaseService.startSession(this.sessionId, this.trainerObj.id);
         this.router.navigate(['/sessions'])
       }
     })
@@ -89,6 +93,21 @@ export class SessionDetailComponent {
       console.log(response);
       if("ok" == response){
         this.firebaseService.cancelSession(this.sessionId);
+        this.router.navigate(['/sessions'])
+      }
+    })
+  }
+
+  endSession(){
+    let dialogRef = this.dialog.open(DialogComponent, {
+      data: {
+        content: new String("Are you sure you want to end this session?")
+      }
+    })
+    dialogRef.afterClosed().subscribe((response) => {
+      console.log(response);
+      if("ok" == response){
+        this.firebaseService.endSession(this.sessionId);
         this.router.navigate(['/sessions'])
       }
     })

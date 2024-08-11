@@ -116,7 +116,7 @@ export class BookSessionComponent {
         console.log(response);
         if("ok" == response){
           this.firebaseService.createSession(this.userInfoId, this.username, this.date.toDateString(), this.startTime, this.endTime, 
-          this.landmark, this.expIndex, this.desc, this.gymname, this.locality, this.pincode, this.state, this.duration);
+          this.landmark, this.expIndex, this.desc, this.gymname, this.locality, this.pincode, this.state, this.duration, rate);
           this.router.navigate(['/home']);
           this.snackbar.open("Successfully requested for a session", "OK");
         }

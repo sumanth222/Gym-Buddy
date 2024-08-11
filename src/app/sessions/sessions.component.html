@@ -20,28 +20,28 @@
 
     <div [style.height.px] = "screenHeight" style="overflow-y: scroll;">
 
-        <h1 class="anton-sc-regular tile-text" style="text-align: center; color: white;">Sessions</h1>
+        <h1 class="anton-sc-regular tile-text" style="text-align: center; color: white;">{{sessionHeader}}</h1>
         <mat-toolbar style="background-color: black;padding-right: 0px;padding-left: 0px;">
-            <div class="home-button toolbar-button-session" (click)="getPendingSessions()">
+            <div class="home-button toolbar-button-session" (click)="getPendingSessions()" title="All requested workout sessions">
                 <p class="home-button-text toolbar-text">Pending sessions</p>
             </div>
-            <div class="home-button toolbar-button-session" (click)="getUpcomingSessions()">
+            <div class="home-button toolbar-button-session" (click)="getUpcomingSessions()" title="Upcoming sessions which you have taken up">
                 <p class="home-button-text toolbar-text">Upcoming sessions</p>
             </div>
         </mat-toolbar>
         <mat-toolbar style="background-color: black;padding-right: 0px;padding-left: 0px;">
-            <div class="about-button toolbar-button-session" (click)="bookNewSession()">
+            <div class="about-button toolbar-button-session" (click)="bookNewSession()" title="Book a new session for yourself">
                 <p class="about-button-text toolbar-text">Book new session</p>
             </div>
-            <div class="contact-button toolbar-button-session" (click)="getCompletedSessions()">
+            <div class="contact-button toolbar-button-session" (click)="getCompletedSessions()" title="Sessions you have already completed">
                 <p class="contact-button-text toolbar-text">Completed sessions</p>
             </div>
         </mat-toolbar>
         <mat-toolbar style="background-color: black;padding-right: 0px;padding-left: 0px;">
-            <div class="about-button toolbar-button-session" (click)="getRequestedSessions()">
+            <div class="about-button toolbar-button-session" (click)="getRequestedSessions()" title="Sessions requested specifically for you">
                 <p class="about-button-text toolbar-text">Requested Sessions</p>
             </div>
-            <div class="contact-button toolbar-button-session" style="width: 50%;" (click)="getCompletedSessions()">
+            <div class="contact-button toolbar-button-session" style="width: 50%;" (click)="getStartedSessions()" title="Currently ongoing sessions">
                 <p class="contact-button-text toolbar-text">In-progress sessions</p>
             </div>
         </mat-toolbar>
@@ -55,7 +55,7 @@
                     <p class="anton-sc-regular tile-text">Requested By: {{session.username}}</p>
                     <p class="anton-sc-regular tile-text">Date: {{session.requested_date}} | Time: {{session.startTime}}</p>
                     <p class="anton-sc-regular tile-text">Duration: {{session.hours}} Hrs</p>
-                    <p class="anton-sc-regular tile-text">Location: {{session.gymName}} | {{session.locality}}</p>
+                    <p *ngIf = "session.gymName != ''" class="anton-sc-regular tile-text">Location: {{session.gymName}} | {{session.locality}}</p>
                     <p class="anton-sc-regular tile-text">Status: {{session.status}} </p>
                     <p class="anton-sc-regular tile-text" style="text-align: center; color: white;">Click to know more</p>
                     </mat-card-content>

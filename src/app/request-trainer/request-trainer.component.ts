@@ -6,6 +6,8 @@ import { DialogComponent } from '../dialog/dialog.component';
 import { FirebaseService } from 'src/services/firebase.service';
 import { UserObject } from '../objects/user-object';
 import { UserServiceService } from 'src/services/user-service.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-request-trainer',
@@ -26,11 +28,13 @@ export class RequestTrainerComponent {
       '5:00 PM','5:30 PM','6:00 PM','6:30 PM','7:00 PM','7:30 PM','8:00 PM','8:30 PM','9:00 PM','9:30 PM','10:00 PM'];
     duration: string = "";
     user: UserObject = new UserObject();
-    date: string = "";
+    date: Date = new Date();
+    desc: string = "";
 
 
   constructor(private requestTrainerServ: RequestTrainerServiceService, private dialog: MatDialog, 
-    private firebaseService: FirebaseService, private userService: UserServiceService
+    private firebaseService: FirebaseService, private userService: UserServiceService, private snackbar: MatSnackBar,
+    private router: Router
   ){}
 
   ngOnInit(){
@@ -68,23 +72,25 @@ export class RequestTrainerComponent {
   requestForSession(){
     console.log("Requesting by "+this.user.username)
     
-    if(this.startTime == "" || this.endTime == ""){
+    if(this.startTime == "" || this.endTime == "" || this.desc == ""){
       this.dialog.open(DialogComponent, {
         data: {
-          content: "Kindly select Start and End times before requesting a session."
+          content: "Kindly select Start and End times a valid date and a short description before requesting a session."
         }
       })
     }
     else{
       let dialogRef = this.dialog.open(DialogComponent, {
         data: {
-          content: "Are you sure you want to request a session with: "+this.trainer.username+ " ?"  
+          content: "Are you sure you want to request a session with "+this.trainer.username+ " ?"  
         }
       })
       dialogRef.afterClosed().subscribe((response) => {
         console.log(response);
         if("ok" == response){
-          
+          this.firebaseService.requestForSession(this.trainer, this.user, this.date, this.startTime, this.endTime, this.desc, this.duration)
+          this.router.navigate(['/home']);
+          this.snackbar.open("Requested session with "+this.trainer.username)
         }
       })
     }

@@ -49,7 +49,11 @@
                     </mat-form-field>
                 </div>
                 <p  class= "anton-sc-regular" style="color: white; font-size: 15px; text-align: center;">Session duration: {{duration}} hour(s)</p>
-
+                <mat-form-field class="bns">
+                    <mat-label>Description</mat-label>
+                    <mat-hint style="color: white;">This would help your trainer prepare in advance.</mat-hint>
+                    <textarea matInput placeholder="Ex: Lower body workout, focusing on calves" name="desc" [(ngModel)]="desc"></textarea>
+                  </mat-form-field>
                 </div>
             </div>
             <div style="height: 20%;">

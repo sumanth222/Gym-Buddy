@@ -75,7 +75,7 @@ export class FirebaseService {
 
           await db.collection("trainer-info").where("id" , "==", user.id).get().then((querySnapshot) => {
             let trainerObj = querySnapshot.docs[0];
-            trainerObject.id = trainerObj.data().id;
+            trainerObject.id = trainerObj.id;
             trainerObject.availdays = trainerObj.data().availabilityDays;
             trainerObject.availtime = trainerObj.data().availabilityTime;
             trainerObject.bio = trainerObj.data().bio;
@@ -150,33 +150,62 @@ export class FirebaseService {
     })
   }
 
-  async getSessions(status: string){
+  async getSessions(status: string, TrainerID: string){
     const db = firebase.firestore();
     let pendingSessions: SessionObject[] = [];
-    
-    await db.collection("sessions").where("Status", "==", status).get().then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        pendingSessions.push(new SessionObject(
-          doc.id,
-          doc?.data()?.UserInfoID,
-          doc?.data()?.Username,
-          doc?.data()?.TrainerID,
-          doc?.data()?.Status,
-          doc?.data()?.RequestedDate,
-          doc?.data()?.Feedback,
-          doc?.data()?.CreatedDate,
-          doc?.data()?.Description,
-          doc?.data()?.Hours,
-          doc?.data()?.Gymname,
-          doc?.data()?.Locality,
-          doc?.data()?.Landmark,
-          doc?.data()?.State,
-          doc?.data()?.Pincode,
-          doc?.data()?.StartTime,
-          doc?.data()?.EndTime,
-        ));
+
+    if("Pending" == status){    
+      await db.collection("sessions").where("Status", "==", status).get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          pendingSessions.push(new SessionObject(
+            doc.id,
+            doc?.data()?.UserInfoID,
+            doc?.data()?.Username,
+            doc?.data()?.TrainerID,
+            doc?.data()?.Status,
+            doc?.data()?.RequestedDate,
+            doc?.data()?.Feedback,
+            doc?.data()?.CreatedDate,
+            doc?.data()?.Description,
+            doc?.data()?.Hours,
+            doc?.data()?.Gymname,
+            doc?.data()?.Locality,
+            doc?.data()?.Landmark,
+            doc?.data()?.State,
+            doc?.data()?.Pincode,
+            doc?.data()?.StartTime,
+            doc?.data()?.EndTime,
+            doc?.data()?.Rate
+          ));
+        })
       })
-    })
+    }
+    else{
+      await db.collection("sessions").where("Status", "==", status).where("TrainerID","==",TrainerID).get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          pendingSessions.push(new SessionObject(
+            doc.id,
+            doc?.data()?.UserInfoID,
+            doc?.data()?.Username,
+            doc?.data()?.TrainerID,
+            doc?.data()?.Status,
+            doc?.data()?.RequestedDate,
+            doc?.data()?.Feedback,
+            doc?.data()?.CreatedDate,
+            doc?.data()?.Description,
+            doc?.data()?.Hours,
+            doc?.data()?.Gymname,
+            doc?.data()?.Locality,
+            doc?.data()?.Landmark,
+            doc?.data()?.State,
+            doc?.data()?.Pincode,
+            doc?.data()?.StartTime,
+            doc?.data()?.EndTime,
+            doc.data()?.Rate
+          ));
+        })
+      })
+    }
     return pendingSessions;
   }
 
@@ -203,31 +232,44 @@ export class FirebaseService {
           doc?.data()?.Pincode,
           doc?.data()?.StartTime,
           doc?.data()?.EndTime,
+          doc?.data()?.Rate
         );
       })
     return session;
   }
 
-  async confirmSession(docID: string, trainerId: string){
+  async confirmSession(docID: string, TrainerID: string){
     const db = firebase.firestore();
 
     await db.collection("sessions").doc(docID).update({
       Status : "Confirmed",
-      trainer_id: trainerId
+      TrainerID: TrainerID
     }).then((response) => {
     }).catch((error) => {
       console.log("Error occurred while updating session as confirmed: "+error);
     })
   }
 
-  async startSession(docID: string){
+  async startSession(docID: string, TrainerID: string){
     const db = firebase.firestore();
 
     await db.collection("sessions").doc(docID).update({
-      status : "Started",
+      Status : "Started",
+      TrainerID: TrainerID
     }).then((response) => {
     }).catch((error) => {
       console.log("Error occurred while updating session as started: "+error);
+    })
+  }
+
+  async endSession(docID: string){
+    const db = firebase.firestore();
+
+    await db.collection("sessions").doc(docID).update({
+      Status : "Completed",
+    }).then((response) => {
+    }).catch((error) => {
+      console.log("Error occurred while updating session as completed: "+error);
     })
   }
   
@@ -236,7 +278,7 @@ export class FirebaseService {
 
     await db.collection("sessions").doc(docID).update({
       Status : "Pending",
-      trainer_id: ""
+      TrainerID: ""
     }).then((response) => {
     }).catch((error) => {
       console.log("Error occurred while updating session as started: "+error);
@@ -245,7 +287,7 @@ export class FirebaseService {
 
   async createSession(userId: string, username: string, reqDate: string, startTime: string, endTime: string,
     landmark: string, expIndex: number, desc: string, gymname: string, locality: string, pincode: string, state: string,
-    hours: string
+    hours: string, rate: number
   ){
     const db = firebase.firestore();
 
@@ -266,7 +308,8 @@ export class FirebaseService {
         Description: desc,
         Status: "Pending",
         Feedback: "",
-        Hours: hours
+        Hours: hours,
+        Rate: rate
     })
   }
 
@@ -305,27 +348,60 @@ export class FirebaseService {
     return gymsAndTrainers;
   }
 
-  async requestForSession(trainer: TrainerObject, user: UserObject){
+  async requestForSession(trainer: TrainerObject, user: UserObject, reqDate: Date, startTime: string, endTime: string,
+    desc: string, hours: string
+  ){
     const db = firebase.firestore();
 
-  //   await addDoc(collection(this.firestore, "sessions"), {
-  //     UserInfoID: user.id,
-  //     Username: user.username,
-  //     TrainerID: trainer.id,
-  //     CreatedDate: new Date().toDateString(),
-  //     RequestedDate: reqDate,
-  //     StartTime: startTime,
-  //     EndTime: endTime,
-  //     Gymname: gymname,
-  //     Locality: locality,
-  //     Pincode: pincode,
-  //     Landmark: landmark,
-  //     State: state,
-  //     ExpIndex: expIndex,
-  //     Description: desc,
-  //     Status: "Pending",
-  //     Feedback: "",
-  //     Hours: hours
-  // })
+    await addDoc(collection(this.firestore, "sessions"), {
+      UserInfoID: user.id,
+      Username: user.username,
+      TrainerID: trainer.id,
+      CreatedDate: new Date().toDateString(),
+      RequestedDate: reqDate.toDateString(),
+      StartTime: startTime,
+      EndTime: endTime,
+      Gymname: trainer.gymname,
+      Locality: "",
+      Pincode: "",
+      Landmark: "",
+      State: "",
+      ExpIndex: "",
+      Description: desc,
+      Status: "Requested",
+      Feedback: "",
+      Hours: hours
+  })
+  }
+
+  async getRequestedSessions(TrainerID: string){
+    const db = firebase.firestore();
+    let pendingSessions: SessionObject[] = [];
+
+    db.collection("sessions").where("Status","==","Requested").where("TrainerID","==",TrainerID).get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        pendingSessions.push(new SessionObject(
+          doc.id,
+          doc?.data()?.UserInfoID,
+          doc?.data()?.Username,
+          doc?.data()?.TrainerID,
+          doc?.data()?.Status,
+          doc?.data()?.RequestedDate,
+          doc?.data()?.Feedback,
+          doc?.data()?.CreatedDate,
+          doc?.data()?.Description,
+          doc?.data()?.Hours,
+          doc?.data()?.Gymname,
+          doc?.data()?.Locality,
+          doc?.data()?.Landmark,
+          doc?.data()?.State,
+          doc?.data()?.Pincode,
+          doc?.data()?.StartTime,
+          doc?.data()?.EndTime,
+          doc?.data()?.Rate
+        ));
+      })
+    })
+    return pendingSessions;
   }
 }

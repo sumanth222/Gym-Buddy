@@ -16,10 +16,11 @@ export class SessionObject{
     pincode: string;
     landmark: string;
     state: string;
+    rate: number
 
     constructor(id: string,user_id: string, username: string, trainer_id: string, status: string, req_date: Date, 
         feedback: string, created_date: Date, description: string, hrs: number, gymname: string, locality: string, landmark: string,
-        state: string, pincode: string, startTime: string, endTime: string
+        state: string, pincode: string, startTime: string, endTime: string, rate: number
     ){
         this.id = id;
         this.user_id = user_id;
@@ -38,5 +39,6 @@ export class SessionObject{
         this.pincode = pincode;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.rate = rate
     }
 }

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FirebaseService } from 'src/services/firebase.service';
 import { SessionObject } from '../objects/session-object';
 import { Router } from '@angular/router';
+import { TrainerInfoService } from 'src/services/trainer-info.service';
 
 @Component({
   selector: 'app-sessions',
@@ -12,29 +13,35 @@ export class SessionsComponent {
 
   pendingSessions: SessionObject[] = [];
   screenHeight: number = 0;
+  trainerId: string = "";
+  sessionHeader: string  = "";
 
-  constructor(private firebaseService: FirebaseService, private router: Router){}
+  constructor(private firebaseService: FirebaseService, private router: Router, private trainerService: TrainerInfoService){}
 
   async ngOnInit(){
     this.getPendingSessions();
     this.screenHeight = screen.height - 56;
-    console.log(this.pendingSessions.length);
+    this.trainerId = this.trainerService.getTrainerObj().id
+    console.log("Trainer ID is: "+this.trainerId);
   }
 
   async getPendingSessions(){
-    await this.firebaseService.getSessions("Pending").then((sessions) => {
+    this.sessionHeader = "Pending Sessions"
+    await this.firebaseService.getSessions("Pending", this.trainerId).then((sessions) => {
       this.pendingSessions = sessions;
     })
   }
 
   async getUpcomingSessions(){
-    await this.firebaseService.getSessions("Confirmed").then((sessions) => {
+    this.sessionHeader = "Upcoming Sessions"
+    await this.firebaseService.getSessions("Confirmed", this.trainerId).then((sessions) => {
       this.pendingSessions = sessions;
     })
   }
 
   async getCompletedSessions(){
-    await this.firebaseService.getSessions("Completed").then((sessions) => {
+    this.sessionHeader = "Completed Sessions"
+    await this.firebaseService.getSessions("Completed", this.trainerId).then((sessions) => {
       this.pendingSessions = sessions;
     })
   }
@@ -49,6 +56,16 @@ export class SessionsComponent {
   }
 
   getRequestedSessions(){
-    
+    this.sessionHeader = "Requested Sessions"
+    this.firebaseService.getRequestedSessions(this.trainerId).then((sessions) => {
+      this.pendingSessions = sessions;
+    })
+  }
+
+  getStartedSessions(){
+    this.sessionHeader = "In-Progress Sessions"
+    this.firebaseService.getSessions("Started", this.trainerId).then((sessions) => {
+      this.pendingSessions = sessions;
+    })
   }
 }
