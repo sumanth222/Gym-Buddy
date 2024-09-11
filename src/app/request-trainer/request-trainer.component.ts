@@ -8,6 +8,8 @@ import { UserObject } from '../objects/user-object';
 import { UserServiceService } from 'src/services/user-service.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import {Location} from '@angular/common';
+
 
 @Component({
   selector: 'app-request-trainer',
@@ -34,7 +36,7 @@ export class RequestTrainerComponent {
 
   constructor(private requestTrainerServ: RequestTrainerServiceService, private dialog: MatDialog, 
     private firebaseService: FirebaseService, private userService: UserServiceService, private snackbar: MatSnackBar,
-    private router: Router
+    private router: Router, private _location: Location
   ){}
 
   ngOnInit(){
@@ -98,5 +100,27 @@ export class RequestTrainerComponent {
 
   dateChanged(event: any){
     
+  }
+
+  goToHome(){
+    this.router.navigate(['/home'])
+  }
+
+  logout(){
+    let dialogRef = this.dialog.open(DialogComponent, {
+      data: {
+        content: "Do you want to logout?"  
+      }
+    })
+    dialogRef.afterClosed().subscribe((response) => {
+      console.log(response);
+      if("ok" == response){
+        this.firebaseService.signoutUser();
+      }
+    })
+  }
+
+  goBack(){
+    this._location.back();
   }
 }

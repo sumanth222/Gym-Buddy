@@ -7,16 +7,19 @@
 <body>
 
     <mat-toolbar style="background-color: gray;padding-right: 0px;">
+        <div class="home-button toolbar-button" (click) = "goBack()" style="border-left: 1px;">
+            <p class="home-button-text toolbar-text">Back</p>
+          </div>
         <span class="toolbar-spacer"></span>
-        <div class="home-button toolbar-button" style="margin-right: 10px;">
+        <div class="home-button toolbar-button" style="margin-right: 10px;" (click)="goToHome()">
             <p class="home-button-text toolbar-text">Home</p>
         </div>
-        <div class="about-button toolbar-button" style="margin-right: 10px;">
-            <p class="about-button-text toolbar-text">About</p>
-        </div>
-        <div class="contact-button toolbar-button" style="margin-right: 10px;">
-            <p class="contact-button-text toolbar-text">Contact</p>
-        </div>
+        <img src="../../assets/icons/menu.svg" [matMenuTriggerFor]="menu" height="40px" width="40px" style="padding-right: 10px;"/>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item>My requested sessions</button>
+            <button mat-menu-item>About</button>
+            <button mat-menu-item (click) = "logout()">Log out</button>
+        </mat-menu>
     </mat-toolbar>  
 
     <h2 class="anton-sc-regular" style="color: white; text-align: center;">Register yourself as a trainer below!</h2>

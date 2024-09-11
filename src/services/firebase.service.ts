@@ -8,6 +8,9 @@ import { SessionObject } from 'src/app/objects/session-object';
 import { UserServiceService } from './user-service.service';
 import { TrainerObject } from 'src/app/objects/trainer-object';
 import { TrainerInfoService } from './trainer-info.service';
+import { Router } from '@angular/router';
+import 'firebase/compat/auth';
+
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +24,7 @@ export class FirebaseService {
   userObject: UserObject = new UserObject;
 
   constructor(private userObjectService: UserServiceService, private userService: UserServiceService,
-    private trainerObjService: TrainerInfoService
+    private trainerObjService: TrainerInfoService, private router: Router
   ) { }
 
   async createUserInfo(username: string, phoneNumber: string, cityState: string){
@@ -403,5 +406,13 @@ export class FirebaseService {
       })
     })
     return pendingSessions;
+  }
+
+  signoutUser(){
+    firebase.auth().signOut().then(() => {
+      this.router.navigate(['/login'])
+    }).catch((error) => {
+      console.log(error);
+    });
   }
 }

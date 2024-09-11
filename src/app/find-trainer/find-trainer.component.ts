@@ -7,8 +7,7 @@ import { DialogComponent } from '../dialog/dialog.component';
 import { TrainerObject } from '../objects/trainer-object';
 import { RequestTrainerServiceService } from 'src/services/request-trainer-service.service';
 import { Router } from '@angular/router';
-import { UserObject } from '../objects/user-object';
-import { UserServiceService } from 'src/services/user-service.service';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-find-trainer',
@@ -30,7 +29,7 @@ export class FindTrainerComponent {
     '5:00 PM','5:30 PM','6:00 PM','6:30 PM','7:00 PM','7:30 PM','8:00 PM','8:30 PM','9:00 PM','9:30 PM','10:00 PM'];
 
   constructor(private firebaseService: FirebaseService, private dialog: MatDialog, private requestTrainerServ: RequestTrainerServiceService,
-    private router: Router
+    private router: Router, private _location: Location
   ){}
 
   async ngOnInit(){
@@ -79,5 +78,27 @@ export class FindTrainerComponent {
     this.requestTrainerServ.setTrainer(trainer);
     this.router.navigate(['/request-trainer'])
     
+  }
+
+  goToHome(){
+    this.router.navigate(['/home'])
+  }
+
+  logout(){
+    let dialogRef = this.dialog.open(DialogComponent, {
+      data: {
+        content: "Do you want to logout?"  
+      }
+    })
+    dialogRef.afterClosed().subscribe((response) => {
+      console.log(response);
+      if("ok" == response){
+        this.firebaseService.signoutUser();
+      }
+    })
+  }
+
+  goBack(){
+    this._location.back();
   }
 }

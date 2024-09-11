@@ -4,6 +4,7 @@ import { DialogComponent } from '../dialog/dialog.component';
 import { FirebaseService } from 'src/services/firebase.service';
 import { UserServiceService } from 'src/services/user-service.service';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 interface Timezone{
   value: string
@@ -17,7 +18,7 @@ interface Timezone{
 export class RegisterComponent {
 
   constructor(private dialog : MatDialog, private firebaseService: FirebaseService, private userService: UserServiceService,
-    private router: Router
+    private router: Router, private _location: Location
   ){
     
   }
@@ -33,7 +34,7 @@ export class RegisterComponent {
   rates: string[] = [
     "₹250",
     "₹450",
-    "₹700"
+    "₹600"
   ]
   nextPage: boolean = false;
   selected: any;
@@ -108,5 +109,27 @@ export class RegisterComponent {
           this.router.navigate(['home'])
         }
       })
+  }
+
+  logout(){
+    let dialogRef = this.dialog.open(DialogComponent, {
+      data: {
+        content: "Do you want to logout?"  
+      }
+    })
+    dialogRef.afterClosed().subscribe((response) => {
+      console.log(response);
+      if("ok" == response){
+        this.firebaseService.signoutUser();
+      }
+    })
+  }
+
+  goToHome(){
+    this.router.navigate(['/home'])
+  }
+
+  goBack(){
+    this._location.back();
   }
 }

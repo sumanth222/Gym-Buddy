@@ -3,6 +3,10 @@ import { FirebaseService } from 'src/services/firebase.service';
 import { SessionObject } from '../objects/session-object';
 import { Router } from '@angular/router';
 import { TrainerInfoService } from 'src/services/trainer-info.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogComponent } from '../dialog/dialog.component';
+import {Location} from '@angular/common';
+
 
 @Component({
   selector: 'app-sessions',
@@ -16,7 +20,9 @@ export class SessionsComponent {
   trainerId: string = "";
   sessionHeader: string  = "";
 
-  constructor(private firebaseService: FirebaseService, private router: Router, private trainerService: TrainerInfoService){}
+  constructor(private firebaseService: FirebaseService, private router: Router, private trainerService: TrainerInfoService,
+    private dialog: MatDialog, private _location: Location
+  ){}
 
   async ngOnInit(){
     this.getPendingSessions();
@@ -67,5 +73,27 @@ export class SessionsComponent {
     this.firebaseService.getSessions("Started", this.trainerId).then((sessions) => {
       this.pendingSessions = sessions;
     })
+  }
+
+  goToHome(){
+    this.router.navigate(['/home'])
+  }
+
+  logout(){
+    let dialogRef = this.dialog.open(DialogComponent, {
+      data: {
+        content: "Do you want to logout?"  
+      }
+    })
+    dialogRef.afterClosed().subscribe((response) => {
+      console.log(response);
+      if("ok" == response){
+        this.firebaseService.signoutUser();
+      }
+    })
+  }
+
+  goBack(){
+    this._location.back();
   }
 }

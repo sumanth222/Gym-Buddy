@@ -7,6 +7,7 @@ import { UserServiceService } from 'src/services/user-service.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { UtilityServiceService } from '../util/utility-service.service';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-book-session',
@@ -52,7 +53,8 @@ export class BookSessionComponent {
 
 
   constructor(private dialog: MatDialog, private firebaseService: FirebaseService, private userService: UserServiceService,
-    private snackbar: MatSnackBar, private router: Router, private utilityService: UtilityServiceService
+    private snackbar: MatSnackBar, private router: Router, private utilityService: UtilityServiceService,
+    private _location: Location
   ){}
 
   ngOnInit(){
@@ -131,5 +133,27 @@ export class BookSessionComponent {
 
   selectState(index: number){
     this.state = this.states[index];
+  }
+
+  goToHome(){
+    this.router.navigate(['/home'])
+  }
+
+  logout(){
+    let dialogRef = this.dialog.open(DialogComponent, {
+      data: {
+        content: "Do you want to logout?"  
+      }
+    })
+    dialogRef.afterClosed().subscribe((response) => {
+      console.log(response);
+      if("ok" == response){
+        this.firebaseService.signoutUser();
+      }
+    })
+  }
+
+  goBack(){
+    this._location.back();
   }
 }

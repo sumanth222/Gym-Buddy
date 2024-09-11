@@ -7,6 +7,8 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
 import { UtilityServiceService } from '../util/utility-service.service';
 import { TrainerObject } from '../objects/trainer-object';
+import {Location} from '@angular/common';
+
 
 @Component({
   selector: 'app-session-detail',
@@ -27,7 +29,7 @@ export class SessionDetailComponent {
   trainerObj: TrainerObject = new TrainerObject();
 
   constructor(private route: ActivatedRoute, private firebaseService: FirebaseService, private trainerObjService: TrainerInfoService,
-    private dialog: MatDialog, private router: Router, private utilityService: UtilityServiceService
+    private dialog: MatDialog, private router: Router, private utilityService: UtilityServiceService, private _location: Location
   ){
 
   }
@@ -111,5 +113,27 @@ export class SessionDetailComponent {
         this.router.navigate(['/sessions'])
       }
     })
+  }
+
+  goToHome(){
+    this.router.navigate(['/home'])
+  }
+
+  logout(){
+    let dialogRef = this.dialog.open(DialogComponent, {
+      data: {
+        content: "Do you want to logout?"  
+      }
+    })
+    dialogRef.afterClosed().subscribe((response) => {
+      console.log(response);
+      if("ok" == response){
+        this.firebaseService.signoutUser();
+      }
+    })
+  }
+
+  goBack(){
+    this._location.back();
   }
 }

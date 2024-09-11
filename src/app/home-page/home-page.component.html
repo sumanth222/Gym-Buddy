@@ -10,12 +10,18 @@
         <div class="home-button toolbar-button" style="margin-right: 10px;">
             <p class="home-button-text toolbar-text">Home</p>
         </div>
-        <div class="about-button toolbar-button" style="margin-right: 10px;">
+        <img src="../../assets/icons/menu.svg" [matMenuTriggerFor]="menu" height="40px" width="40px" style="padding-right: 10px;"/>
+        <mat-menu #menu="matMenu">
+            <button (click)="requestedSessions()" mat-menu-item>My requested sessions</button>
+            <button mat-menu-item>About</button>
+            <button mat-menu-item (click) = "logout()">Log out</button>
+          </mat-menu>
+        <!-- <div class="about-button toolbar-button" style="margin-right: 10px;">
             <p class="about-button-text toolbar-text">About</p>
         </div>
-        <div class="contact-button toolbar-button" style="margin-right: 10px;">
-            <p class="contact-button-text toolbar-text">Contact</p>
-        </div>
+        <div class="contact-button toolbar-button" style="margin-right: 10px;" (click) = "logout()">
+            <p class="contact-button-text toolbar-text">Log out</p>
+        </div> -->
     </mat-toolbar>  
 
     <h2 class="anton-sc-regular" style="color: white; text-align: center;">Welcome to Gym Buddy</h2>
@@ -27,8 +33,8 @@
             <p class="anton-sc-regular tile-subtext">Request a workout session with one of our amazing trainers.</p>
         </div>
 
-        <div class="feature-tile">
-            <p class="anton-sc-regular tile-text" (click)="findTrainer()">Find a Trainer</p>
+        <div class="feature-tile" (click)="findTrainer()">
+            <p class="anton-sc-regular tile-text">Find a Trainer</p>
             <p class="anton-sc-regular tile-subtext">Find a person who is ready to guide and train you at your gym!</p>
         </div>
 
